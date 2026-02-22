@@ -81,3 +81,10 @@
     min-height: 100vh;
     margin: 0;
   }
+
+  .centered-details {
+    margin: 0 auto;
+    display: block;
+    width: fit-content;
+    text-align: left; 
+  }
