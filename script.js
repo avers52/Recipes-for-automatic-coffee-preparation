@@ -30,6 +30,7 @@ window.onload = function() {
         }
     }
 
+
     // Настраиваем обработчики для цифровых кнопок
     digitButtons.forEach(button => {
         button.onclick = function() {
@@ -56,7 +57,6 @@ window.onload = function() {
         selectedOperation = '/';
     };
 
-    // Запрограммируйте операцию смены знака +/-;
     // Для смены знака используйте умножение на -1
     document.getElementById("btn_op_sign").onclick = function() {
         if (!selectedOperation) {
@@ -89,6 +89,98 @@ window.onload = function() {
         }
     };
 
+
+    // стирание последней цифры
+    document.getElementById("btn_op_backspace").onclick = function() {
+        if (!selectedOperation) {
+            if (a.length > 0) {
+                a = a.slice(0,-1);
+                outputElement.innerHTML = a || '0';
+            }
+        } else {
+            if (b.length > 0) {
+                b = b.slice(0,-1);
+                outputElement.innerHTML = b || '0';
+            }
+        }
+    }
+
+    // квадрат
+    document.getElementById("btn_op_square").onclick = function() {
+        if (!selectedOperation) {
+            if (a !== '') {
+                const num = parseFloat(a);
+                a = (num * num).toString();
+                outputElement.innerHTML = a;
+            }
+        } else {
+            if (b !== '') {
+                const num = parseFloat(b);
+                b = (num * num).toString();
+                outputElement.innerHTML = b;
+            }
+        }
+    }
+
+    function factorial(n) {
+        if (n === 0 || n === 1) return 1;
+        let result = 1;
+        for (let i = 2; i <= n; i++) {
+            result *= i;
+        }
+        return result;
+    }
+
+    // факториал
+    document.getElementById("btn_op_factorail").onclick = function() {
+        if (!selectedOperation) {
+            if (a !== '') {
+              const num = parseFloat(a);
+              // Проверка: целое неотрицательное число
+              if (num >= 0 && num % 1 === 0 && num <= 20) {
+                a = factorial(num).toString();
+                outputElement.innerHTML = a;
+              } else {
+                outputElement.innerHTML = 'Error';
+              }
+            }
+          } else {
+            if (b !== '') {
+              const num = parseFloat(b);
+              if (num >= 0 && num % 1 === 0 && num <= 20) {
+                b = factorial(num).toString();
+                outputElement.innerHTML = b;
+              } else {
+                outputElement.innerHTML = 'Error';
+              }
+            }
+          }
+        };
+           
+
+        // модуль
+    document.getElementById("btn_op_abs").onclick = function() {
+        if (!selectedOperation) {
+            if (a !== '') {
+                a = Math.abs(parseFloat(a)).toString();
+                outputElement.innerHTML = a;
+            }
+        } else {
+            if (b !== '') {
+                b = Math.abs(parseFloat(b)).toString();
+                outputElement.innerHTML = b;
+            }
+        }
+    }
+
+    document.getElementById("btn_op_000").onclick = function() {
+        onDigitButtonClicked('0'); 
+        onDigitButtonClicked('0');
+        onDigitButtonClicked('0');
+    }
+
+
+
     // Вычисление при нажатии на "="
     document.getElementById("btn_op_equal").onclick = function() {
         if (a === '' || b === '' || !selectedOperation) return;
@@ -116,6 +208,8 @@ window.onload = function() {
             default:
                 return;
         }
+
+   
 
         // Сохраняем результат как новое первое число
         a = expressionResult.toString();
