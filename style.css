@@ -6,8 +6,8 @@
     height: 50px;                /* задаем высоту кнопки */
     border-radius: 50%;          /* округляем кнопку */
     border: none;                /* отключаем обводку */
-    background: #6F4E37;         /* кофейный цвет вместо серого */
-    color: white;                /* задаем белый цвет текста внутри кнопки */
+    background: #ffffff;         /* кофейный цвет вместо серого */
+    color: rgb(0, 0, 0);                /* задаем белый цвет текста внутри кнопки */
     font-size: 1.5rem;           /* увеличим размер шрифта */
     font-family: Arial, Helvetica, sans-serif; /* сменим шрифт */
     cursor: pointer;             /* при наведении на кнопку курсор будет изменен
@@ -27,18 +27,14 @@
   
   /* селектор для кнопок первостепенных операций */
   .my-btn.primary { 
-    background: #A1887F; 
+    background: #1b1b1b; 
+    color: rgb(255, 255, 255);
   }
   
   /* селектор для кнопок второстепенных операций */
   .my-btn.secondary { 
-    background: #5D4037; 
-  }
-  
-  /* селектор для кнопки GitHub */
-  .my-btn.github {
-    background: #5D4037; 
-    color: #FFD700;      
+    background: #9e9e9e; 
+    color: rgb(0, 0, 0);
   }
   
   /* селектор для кнопки расчета выражения (=) */
@@ -48,12 +44,12 @@
   }
   
   /* селектор для кнопки GitHub */
-  .my-btn.full-width {
+  .my-btn.github {
     width: 220px;        
     max-width: 100%;
     border-radius: 30px;   
-    background: #2E1B14;   
-    color: #FFD700;        
+    background: rgb(245, 186, 26);  
+    color: #000000;        
     font-weight: bold;
     margin-left: 0;        
     margin-right: 0;       
@@ -66,9 +62,9 @@
     height: 50px;
     margin-bottom: 15px;         /* отступ снизу */
     padding-right: 10px;         /* выступ справа */
-    background: rgb(47, 27, 20); /* очень тёмный кофейный вместо серого */
+    background: rgb(245, 186, 26); 
     text-align: right;           /* примагнитим текст к правой стороне */
-    color: #ffffff;              /* цвет текста белый */
+    color: #000000;              
     font-size: 1.5rem;
     font-family: Arial, Helvetica, sans-serif;
   }
