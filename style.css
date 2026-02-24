@@ -6,8 +6,8 @@
   height: 50px;                /* задаем высоту кнопки */
   border-radius: 50%;          /* округляем кнопку */
   border: none;                /* отключаем обводку */
-  background: #ffffff;         /* кофейный цвет вместо серого */
-  color: rgb(0, 0, 0);                /* задаем белый цвет текста внутри кнопки */
+  background: #000000;         /* кофейный цвет вместо серого */
+  color: rgb(255, 255, 255);                /* задаем белый цвет текста внутри кнопки */
   font-size: 1.5rem;           /* увеличим размер шрифта */
   font-family: Arial, Helvetica, sans-serif; /* сменим шрифт */
   cursor: pointer;             /* при наведении на кнопку курсор будет изменен
@@ -17,7 +17,7 @@
 
 /* hover - это состояние элемента, когда на него наведен курсор */
 .my-btn:hover {
-  background: #8B4513; 
+  background: #d6f71c; 
 }
 
 /* active - это состояние активации элемента. В случае кнопки - нажатие на нее */
@@ -27,7 +27,7 @@
 
 /* селектор для кнопок первостепенных операций */
 .my-btn.primary { 
-  background: #1b1b1b; 
+  background: #4d4c4c; 
   color: rgb(255, 255, 255);
 }
 
@@ -45,7 +45,8 @@
 
 /* селектор для кнопки GitHub */
 .my-btn.github {
-  width: 285px;        
+  width: 290px;        
+  max-width: 100%;
   border-radius: 30px;   
   background: rgb(245, 186, 26);  
   color: #000000;        
@@ -58,7 +59,7 @@
 .result { 
   border-radius: 15px;
   width: 275px;
-  height: 60px;
+  height: 50px;
   margin-bottom: 15px;         /* отступ снизу */
   padding-right: 10px;         /* выступ справа */
   background: rgb(245, 186, 26); 
@@ -69,7 +70,7 @@
 }
 
 body {
-  background-color: #e0d9b2;
+  background-color: #ffffff;
   display: flex;
   justify-content: center;
   align-items: center;
