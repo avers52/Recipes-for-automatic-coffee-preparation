@@ -158,20 +158,24 @@ window.onload = function() {
         };
            
 
-        // модуль
-    document.getElementById("btn_op_abs").onclick = function() {
-        if (!selectedOperation) {
-            if (a !== '') {
-                a = Math.abs(parseFloat(a)).toString();
-                outputElement.innerHTML = a;
-            }
-        } else {
-            if (b !== '') {
-                b = Math.abs(parseFloat(b)).toString();
-                outputElement.innerHTML = b;
-            }
-        }
+
+    const originalBgColor = '#ffffff'; 
+    const coffeeBgColor = '#6F4E37';   
+
+    
+    let isCoffeeTheme = false;
+
+    document.getElementById("btn_coffee_theme").onclick = function() {
+    if (isCoffeeTheme) {
+        // Возвращаем исходный фон
+        document.body.style.backgroundColor = originalBgColor;
+        isCoffeeTheme = false;
+    } else {
+        // Меняем на кофейный фон
+        document.body.style.backgroundColor = coffeeBgColor;
+        isCoffeeTheme = true;
     }
+    };
 
     document.getElementById("btn_op_000").onclick = function() {
         onDigitButtonClicked('0'); 
