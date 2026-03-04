@@ -6,7 +6,7 @@ window.onload = function() {
     let selectedOperation = null;  // Выбранная операция
 
     // Получаем доступ к экрану калькулятора
-    const outputElement = document.getElementById("result");
+    const outputElement = document.getElementById("coffee_window");
 
     // Получаем все кнопки с цифрами (id начинаются с "coffee_digit_")
     const digitButtons = document.querySelectorAll('[id ^= "coffee_digit_"]');
