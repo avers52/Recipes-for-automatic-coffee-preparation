@@ -8,8 +8,8 @@ window.onload = function() {
     // Получаем доступ к экрану калькулятора
     const outputElement = document.getElementById("result");
 
-    // Получаем все кнопки с цифрами (id начинаются с "btn_digit_")
-    const digitButtons = document.querySelectorAll('[id ^= "btn_digit_"]');
+    // Получаем все кнопки с цифрами (id начинаются с "coffee_digit_")
+    const digitButtons = document.querySelectorAll('[id ^= "coffee_digit_"]');
 
     // Функция обработки нажатия на цифру или точку
     function onDigitButtonClicked(digit) {
@@ -40,25 +40,25 @@ window.onload = function() {
     });
 
     // Обработчики для операций
-    document.getElementById("btn_op_mult").onclick = function() {
+    document.getElementById("coffee_op_mult").onclick = function() {
         if (a === '') return;
         selectedOperation = 'x';
     };
-    document.getElementById("btn_op_plus").onclick = function() {
+    document.getElementById("coffee_op_plus").onclick = function() {
         if (a === '') return;
         selectedOperation = '+';
     };
-    document.getElementById("btn_op_minus").onclick = function() {
+    document.getElementById("coffee_op_minus").onclick = function() {
         if (a === '') return;
         selectedOperation = '-';
     };
-    document.getElementById("btn_op_div").onclick = function() {
+    document.getElementById("coffee_op_div").onclick = function() {
         if (a === '') return;
         selectedOperation = '/';
     };
 
     // Для смены знака используйте умножение на -1
-    document.getElementById("btn_op_sign").onclick = function() {
+    document.getElementById("coffee_op_sign").onclick = function() {
         if (!selectedOperation) {
             // Меняем знак первого числа
             if (a !== '') {
@@ -75,7 +75,7 @@ window.onload = function() {
     };
 
     // Процент
-    document.getElementById("btn_op_percent").onclick = function() {
+    document.getElementById("coffee_op_percent").onclick = function() {
         if (!selectedOperation) {
             if (a !== '') {
                 a = (parseFloat(a) / 100).toString();
@@ -91,7 +91,7 @@ window.onload = function() {
 
 
     // стирание последней цифры
-    document.getElementById("btn_op_backspace").onclick = function() {
+    document.getElementById("coffee_op_backspace").onclick = function() {
         if (!selectedOperation) {
             if (a.length > 0) {
                 a = a.slice(0,-1);
@@ -106,7 +106,7 @@ window.onload = function() {
     }
 
     // квадрат
-    document.getElementById("btn_op_square").onclick = function() {
+    document.getElementById("coffee_op_square").onclick = function() {
         if (!selectedOperation) {
             if (a !== '') {
                 const num = parseFloat(a);
@@ -122,7 +122,7 @@ window.onload = function() {
         }
     }
 
-    function factorial(n) {
+    function coffee_factorial(n) {
         if (n === 0 || n === 1) return 1;
         let result = 1;
         for (let i = 2; i <= n; i++) {
@@ -132,13 +132,13 @@ window.onload = function() {
     }
 
     // факториал
-    document.getElementById("btn_op_factorail").onclick = function() {
+    document.getElementById("coffee_op_factorail").onclick = function() {
         if (!selectedOperation) {
             if (a !== '') {
               const num = parseFloat(a);
               // Проверка: целое неотрицательное число
               if (num >= 0 && num % 1 === 0 && num <= 20) {
-                a = factorial(num).toString();
+                a = coffee_factorial(num).toString();
                 outputElement.innerHTML = a;
               } else {
                 outputElement.innerHTML = 'Error';
@@ -159,25 +159,18 @@ window.onload = function() {
            
 
 
-    const originalBgColor = '#ffffff'; 
-    const coffeeBgColor = '#6F4E37';   
-
-    
-    let isCoffeeTheme = false;
-
-    document.getElementById("btn_coffee_theme").onclick = function() {
-    if (isCoffeeTheme) {
-        // Возвращаем исходный фон
-        document.body.style.backgroundColor = originalBgColor;
-        isCoffeeTheme = false;
-    } else {
-        // Меняем на кофейный фон
-        document.body.style.backgroundColor = coffeeBgColor;
-        isCoffeeTheme = true;
-    }
+    document.getElementById("coffee_shot").onclick = function() {
+        let shots = parseFloat(outputElement.innerHTML);
+        if (!isNaN(shots)) {
+            let ml = shots * 30;
+            outputElement.innerHTML = ml;
+            a = ml.toString();
+            b = '';
+            selectedOperation = null;
+        }
     };
 
-    document.getElementById("btn_op_000").onclick = function() {
+    document.getElementById("coffee_op_000").onclick = function() {
         onDigitButtonClicked('0'); 
         onDigitButtonClicked('0');
         onDigitButtonClicked('0');
@@ -186,7 +179,7 @@ window.onload = function() {
 
 
     // Вычисление при нажатии на "="
-    document.getElementById("btn_op_equal").onclick = function() {
+    document.getElementById("coffee_op_equal").onclick = function() {
         if (a === '' || b === '' || !selectedOperation) return;
 
         switch(selectedOperation) {
@@ -223,7 +216,7 @@ window.onload = function() {
     };
 
     // Очистка при нажатии на "C"
-    document.getElementById("btn_op_clear").onclick = function() {
+    document.getElementById("coffee_op_clear").onclick = function() {
         a = '';
         b = '';
         selectedOperation = null;
@@ -232,7 +225,7 @@ window.onload = function() {
     };
 
     // Кнопка GitHub: открывает репозиторий в новой вкладке
-    document.getElementById("btn_github").onclick = function() {
+    document.getElementById("coffee_github").onclick = function() {
         window.open('https://github.com/avers52', '_blank');
     };
 };
