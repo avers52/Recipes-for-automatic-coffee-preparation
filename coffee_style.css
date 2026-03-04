@@ -48,7 +48,7 @@
   width: 290px;        
   max-width: 100%;
   border-radius: 30px;   
-  background: rgb(245, 186, 26);  
+  background: rgb(199, 146, 1);  
   color: #000000;        
   font-weight: bold;
   margin-left: 0;        
@@ -62,7 +62,7 @@
   height: 50px;
   margin-bottom: 15px;         /* отступ снизу */
   padding-right: 10px;         /* выступ справа */
-  background: rgb(245, 186, 26); 
+  background:  rgb(199, 146, 1);  ; 
   text-align: right;           /* примагнитим текст к правой стороне */
   color: #000000;              
   font-size: 1.5rem;
