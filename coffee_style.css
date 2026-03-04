@@ -56,7 +56,7 @@
 }
 
 /* селектор для поля вывода результата */
-.result { 
+.coffee_window { 
   border-radius: 15px;
   width: 275px;
   height: 50px;
