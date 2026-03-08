@@ -2,11 +2,31 @@ import { RecipeCardComponent } from '../../components/recipe-card/index.js';
 import { HeaderComponent } from '../../components/header/index.js';
 import { RecipePage } from '../recipe/index.js';  
 import { recipes } from '../../data/recipe.js';
+import { convertRecipeIdsToRange, findPalindromeRecipes } from '../../utils/recipeUtils.js';
 
 export class MainPage {
     constructor(parent) {
         this.parent = parent;
         this.filteredRecipes = [...recipes];
+    }
+
+    showRecipeRanges() {
+        const ids = recipes.map(r => r.id);
+        const rangeString = convertRecipeIdsToRange(ids);
+        alert(`ID рецептов в наличии: ${rangeString}`);
+        console.log('ID рецептов:', rangeString);
+    }
+
+    showPalindromeRecipes() {
+        const palindromes = findPalindromeRecipes(recipes);
+        if (palindromes.length === 0) {
+            alert('Рецептов-палиндромов не найдено!');
+        } else {
+            const names = palindromes.map(r => r.title).join(', ');
+            alert(`Найдены рецепты-палиндромы: ${names}`);
+            this.filteredRecipes = palindromes;
+            this.renderRecipes();
+        }
     }
 
     filterRecipes(searchTerm) {
@@ -92,10 +112,14 @@ export class MainPage {
         this.parent.appendChild(mainContent);
 
         const controlsDiv = document.createElement('div');
-        controlsDiv.className = 'd-flex justify-content-between align-items-center mb-4';
+        controlsDiv.className = 'd-flex justify-content-between align-items-center mb-4 flex-wrap';
         controlsDiv.innerHTML = `
             <h1>☕ Рецепты для кофемашины</h1>
-            <button class="btn btn-success" id="add-recipe-btn">+ Добавить копию первой карточки</button>
+            <div class="btn-group mt-2 mt-md-0">
+                <button class="btn btn-success" id="add-recipe-btn">+ Копия</button>
+                <button class="btn btn-info" id="show-ranges-btn">Показать диапазоны ID</button>
+                <button class="btn btn-warning" id="show-palindromes-btn">Показать палиндромы</button>
+            </div>
         `;
         mainContent.appendChild(controlsDiv);
 
@@ -114,12 +138,23 @@ export class MainPage {
         this.filteredRecipes = [...recipes];
         this.renderRecipes();
 
+        // Обработчики
         document.getElementById('search-input').addEventListener('input', (e) => {
             this.filterRecipes(e.target.value);
         });
 
         document.getElementById('add-recipe-btn').addEventListener('click', () => {
             this.addFirstCardCopy();
+        });
+
+        // НОВЫЙ обработчик для кнопки "Показать диапазоны ID"
+        document.getElementById('show-ranges-btn').addEventListener('click', () => {
+            this.showRecipeRanges();
+        });
+
+        // НОВЫЙ обработчик для кнопки "Показать палиндромы"
+        document.getElementById('show-palindromes-btn').addEventListener('click', () => {
+            this.showPalindromeRecipes();
         });
 
         this.parent.addEventListener('navigate-home', () => {
