@@ -1,4 +1,3 @@
-// data/recipes.js
 export const recipes = [
     {
         id: 1,

@@ -1,5 +1,5 @@
 import { HeaderComponent } from '../../components/header/index.js';
-import { recipes } from '../../data/recipes.js';
+import { recipes } from '../../data/recipe.js';
 
 export class RecipePage {
     constructor(parent, recipeId) {

@@ -1,7 +1,7 @@
 import { RecipeCardComponent } from '../../components/recipe-card/index.js';
 import { HeaderComponent } from '../../components/header/index.js';
 import { RecipePage } from '../recipe/index.js';
-import { recipes } from '../../data/recipes.js';
+import { recipes } from '../../data/recipe.js';
 
 export class MainPage {
     constructor(parent) {
