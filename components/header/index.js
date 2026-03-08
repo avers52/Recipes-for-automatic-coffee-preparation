@@ -26,7 +26,6 @@ export class HeaderComponent {
     }
 
     addListeners() {
-        // Обработчики для обеих кнопок (логотип и кнопка "Домой")
         const homeLinks = document.querySelectorAll('#home-link, #home-link-nav');
         homeLinks.forEach(link => {
             link.addEventListener('click', (e) => {

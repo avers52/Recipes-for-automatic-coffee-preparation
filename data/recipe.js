@@ -3,7 +3,7 @@ export const recipes = [
         id: 1,
         title: "Эспрессо",
         description: "Крепкий, насыщенный кофе с плотной пенкой (крема). Основа для многих других напитков.",
-        image: "https://images.unsplash.com/photo-1610889556528-9a770e32642f?w=600&auto=format&fit=crop&q=60", // Можно найти другую картинку
+        image: "https://img.ixbt.site/live/images/original/32/75/48/2024/10/16/13debe3369.jpg", 
         ingredients: [
             "Свежемолотые зерна сильной обжарки мелкого помола – 7гр",
             "Вода — 30 мл"
@@ -18,7 +18,7 @@ export const recipes = [
         id: 2,
         title: "Латте",
         description: "Нежный кофе с большим количеством молока и воздушной пенкой.",
-        image: "https://images.unsplash.com/photo-1570968915860-54d5c301fa9f?w=600&auto=format&fit=crop&q=60",
+        image: "https://avatars.mds.yandex.net/i?id=1bd600554304073140c5751455eabf38_l-9834975-images-thumbs&n=13",
         ingredients: [
             "Эспрессо – 1 чашка (30 мл)",
             "Горячее молоко (60-70˚С) – 150 мл"
@@ -34,7 +34,7 @@ export const recipes = [
         id: 3,
         title: "Капучино (классический)",
         description: "Сбалансированный вкус эспрессо и молока с плотной пенкой.",
-        image: "https://images.unsplash.com/photo-1534778101976-62847782c213?w=600&auto=format&fit=crop&q=60",
+        image: "https://mos-koff.ru/wp-content/uploads/2021/06/5-1024x682.jpeg",
         ingredients: [
             "Эспрессо – 1 чашка",
             "Молоко (не менее 3,5% жирности) – 100 мл",
@@ -53,7 +53,7 @@ export const recipes = [
         id: 4,
         title: "Гляссе",
         description: "Освежающий десертный кофе с мороженым.",
-        image: "https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=600&auto=format&fit=crop&q=60",
+        image: "https://mos-koff.ru/wp-content/uploads/2021/06/6.jpeg",
         ingredients: [
             "Эспрессо – 90 мл",
             "Мороженое (сливочное или ванильное) – 30 гр",
