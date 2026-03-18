@@ -37,7 +37,7 @@ export function isRecipeNamePalindrome(recipeName) {
     const reversedStr = cleanedStr.split('').reverse().join('');
     const isPalindromeSimple = cleanedStr === reversedStr;
 
-    // РЕШЕНИЕ 2: Через цикл while (сравнение символов с начала и конца) 
+    // РЕШЕНИЕ 2: Через цикл while 
     let isPalindromeLoop = true;
     let left = 0;
     let right = cleanedStr.length - 1;

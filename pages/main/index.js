@@ -64,7 +64,6 @@ export class MainPage {
         }
     }
 
-    // ⬇️ МЕТОД, КОТОРЫЙ ИСПОЛЬЗУЕТ RecipePage
     showRecipe(recipeId) {
         console.log('Showing recipe:', recipeId);
         const recipePage = new RecipePage(this.parent, recipeId);
@@ -94,7 +93,6 @@ export class MainPage {
             recipeCard.render(recipeData);
         });
 
-        // ⬇️ ОБРАБОТЧИК СОБЫТИЯ, КОТОРЫЙ ВЫЗЫВАЕТ showRecipe
         container.addEventListener('recipe-selected', (e) => {
             console.log('Recipe selected event caught:', e.detail.recipeId);
             this.showRecipe(e.detail.recipeId);
@@ -138,7 +136,6 @@ export class MainPage {
         this.filteredRecipes = [...recipes];
         this.renderRecipes();
 
-        // Обработчики
         document.getElementById('search-input').addEventListener('input', (e) => {
             this.filterRecipes(e.target.value);
         });
@@ -147,12 +144,10 @@ export class MainPage {
             this.addFirstCardCopy();
         });
 
-        // НОВЫЙ обработчик для кнопки "Показать диапазоны ID"
         document.getElementById('show-ranges-btn').addEventListener('click', () => {
             this.showRecipeRanges();
         });
 
-        // НОВЫЙ обработчик для кнопки "Показать палиндромы"
         document.getElementById('show-palindromes-btn').addEventListener('click', () => {
             this.showPalindromeRecipes();
         });
