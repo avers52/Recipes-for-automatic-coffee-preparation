@@ -5,6 +5,7 @@ export class RecipePage {
     constructor(parent, recipeId) {
         this.parent = parent;
         this.recipe = recipes.find(r => r.id === recipeId);
+        console.log('Загружен рецепт:', this.recipe); // для отладки
     }
 
     getHTML() {
@@ -22,21 +23,31 @@ export class RecipePage {
 
         return (
             `
-            <div class="container mt-4">
+           <div class="container mt-4">
                 <div class="card">
-                    <img src="${this.recipe.image}" class="card-img-top" alt="${this.recipe.title}" style="max-height: 400px; object-fit: cover;">
-                    <div class="card-body">
-                        <h2 class="card-title">${this.recipe.title}</h2>
-                        <p class="card-text">${this.recipe.description}</p>
-                        <hr>
-                        <h4>Ингредиенты:</h4>
-                        <ul class="list-group list-group-flush mb-3">
-                            ${ingredientsList}
-                        </ul>
-                        <h4>Приготовление:</h4>
-                        <ol class="list-group list-group-flush list-group-numbered">
-                            ${stepsList}
-                        </ol>
+                    <div class="row g-0">
+                        <div class="col-md-5">
+                            <img src="${this.recipe.image}"  
+                                 class="img-fluid rounded-start" 
+                                 alt="${this.recipe.title}" 
+                                 style="height: 100%; width: 100%; object-fit: cover;"
+                                 onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1512568400610-62da28bc8a13?w=600'">  
+                        </div>
+                        <div class="col-md-7">
+                            <div class="card-body">
+                                <h2 class="card-title">${this.recipe.title}</h2>
+                                <p class="card-text">${this.recipe.description}</p>
+                                <hr>
+                                <h4>Ингредиенты:</h4>
+                                <ul class="list-group list-group-flush mb-3">
+                                    ${ingredientsList}
+                                </ul>
+                                <h4>Приготовление:</h4>
+                                <ol class="list-group list-group-flush list-group-numbered">
+                                    ${stepsList}
+                                </ol>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -45,19 +56,16 @@ export class RecipePage {
     }
 
     render() {
-        this.parent.innerHTML = ''; // полная очистка
+        this.parent.innerHTML = '';
         
-        // Рендерим header
         const header = new HeaderComponent(this.parent);
         header.render();
 
-        // Основной контент
         const html = this.getHTML();
         this.parent.insertAdjacentHTML('beforeend', html);
 
-        // Слушатель для возврата домой
         this.parent.addEventListener('navigate-home', () => {
-            // Это событие поймает MainPage, который должен быть перерендерен
+            // Событие для возврата домой
         }, { once: true });
     }
 }
