@@ -1,5 +1,4 @@
 // idb.js - хранение пользовательских моделей
-
 const DB_NAME = 'Coffee3DGallery';
 const DB_VERSION = 1;
 const STORE_NAME = 'models';
@@ -24,7 +23,7 @@ function openDB() {
         request.onupgradeneeded = (event) => {
             const db = event.target.result;
             if (!db.objectStoreNames.contains(STORE_NAME)) {
-                db.createObjectStore(STORE_NAME, { keyPath: 'id' });
+                db.createObjectStore(STORE_NAME, { keyPath: 'id', autoIncrement: true });
             }
         };
     });
@@ -35,7 +34,7 @@ export async function saveModel(model) {
     return new Promise((resolve, reject) => {
         const transaction = db.transaction([STORE_NAME], 'readwrite');
         const store = transaction.objectStore(STORE_NAME);
-        const request = store.put(model);
+        const request = store.add({ name: model.name, buffer: model.buffer, filename: model.filename });
         request.onsuccess = () => resolve(request.result);
         request.onerror = () => reject(request.error);
     });
@@ -57,7 +56,7 @@ export async function getModelById(id) {
     return new Promise((resolve, reject) => {
         const transaction = db.transaction([STORE_NAME], 'readonly');
         const store = transaction.objectStore(STORE_NAME);
-        const request = store.get(id);
+        const request = store.get(Number(id));
         request.onsuccess = () => resolve(request.result);
         request.onerror = () => reject(request.error);
     });

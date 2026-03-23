@@ -1,18 +1,15 @@
-// main.js - точка входа с маршрутизацией
+// main.js
 import { MainPage } from './pages/main/index.js';
 import { initGallery } from './app.js';
 
 const contentContainer = document.getElementById('app-content');
 
-// Функция показа рецептов (ваша ЛР3)
 function showRecipes() {
     contentContainer.innerHTML = '<div id="recipes-root"></div>';
-    const recipesRoot = document.getElementById('recipes-root');
-    const mainPage = new MainPage(recipesRoot);
+    const mainPage = new MainPage(contentContainer.querySelector('#recipes-root'));
     mainPage.render();
 }
 
-// Функция показа 3D галереи
 function showGallery() {
     contentContainer.innerHTML = '<div id="gallery-root"></div>';
     initGallery();
@@ -34,4 +31,12 @@ document.getElementById('home-link')?.addEventListener('click', (e) => {
     showRecipes();
 });
 
-showRecipes();
+// Проверяем параметр URL при загрузке
+const urlParams = new URLSearchParams(window.location.search);
+if (urlParams.get('view') === 'gallery') {
+    showGallery();
+} else {
+    showRecipes();
+}
+
+// npm install bootstrap

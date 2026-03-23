@@ -57,9 +57,6 @@ export class RecipePage {
 
     render() {
         this.parent.innerHTML = '';
-        
-        const header = new HeaderComponent(this.parent);
-        header.render();
 
         const html = this.getHTML();
         this.parent.insertAdjacentHTML('beforeend', html);
