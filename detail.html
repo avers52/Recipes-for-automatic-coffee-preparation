@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>3D Модель - Кофейная галерея</title>
+    <link rel="stylesheet" href="styles.css">
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+</head>
+<body>
+    <!-- Кнопка назад на ГЛАВНУЮ СТРАНИЦУ ГАЛЕРЕИ -->
+    <a href="javascript:void(0)" id="back-to-gallery" class="back-link">← Назад в галерею</a>
+    <div class="detail-container">
+        <canvas id="detail-canvas" class="detail-canvas"></canvas>
+        <div id="model-title" class="model-title"></div>
+        <div class="detail-controls">
+            <button id="view-front">Спереди</button>
+            <button id="view-back">Сзади</button>
+            <button id="view-left">Слева</button>
+            <button id="view-right">Справа</button>
+        </div>
+        <div class="zoom-controls">
+            <button id="zoom-in">+</button>
+            <button id="zoom-out">−</button>
+        </div>
+    </div>
+    <script src="idb.js"></script>
+    <script type="module" src="detail.js"></script>
+</body>
+</html>

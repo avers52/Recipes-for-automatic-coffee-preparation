@@ -1,16 +1,37 @@
+// main.js - точка входа с маршрутизацией
 import { MainPage } from './pages/main/index.js';
+import { initGallery } from './app.js';
 
-const root = document.getElementById('root');
+const contentContainer = document.getElementById('app-content');
 
-function renderApp() {
-    const mainPage = new MainPage(root);
+// Функция показа рецептов (ваша ЛР3)
+function showRecipes() {
+    contentContainer.innerHTML = '<div id="recipes-root"></div>';
+    const recipesRoot = document.getElementById('recipes-root');
+    const mainPage = new MainPage(recipesRoot);
     mainPage.render();
 }
 
-renderApp();
+// Функция показа 3D галереи
+function showGallery() {
+    contentContainer.innerHTML = '<div id="gallery-root"></div>';
+    initGallery();
+}
 
-document.addEventListener('navigate-home', () => {
-    renderApp();
+// Навигация
+document.getElementById('nav-recipes')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    showRecipes();
 });
 
-// npm install bootstrap 
+document.getElementById('nav-gallery')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    showGallery();
+});
+
+document.getElementById('home-link')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    showRecipes();
+});
+
+showRecipes();

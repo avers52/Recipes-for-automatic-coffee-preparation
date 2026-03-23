@@ -8,12 +8,10 @@ export function convertRecipeIdsToRange(idsArray) {
     let start = sortedIds[0];
     let end = sortedIds[0];
 
-    // Используем цикл for...of для обхода коллекции (не по счетчику!)
     for (const currentId of sortedIds.slice(1)) {
         if (currentId === end + 1) {
-            end = currentId; // Продолжаем диапазон
+            end = currentId; 
         } else {
-            // Завершаем текущий диапазон
             ranges.push(start === end ? `${start}` : `${start}-${end}`);
             start = currentId;
             end = currentId;
@@ -33,11 +31,11 @@ export function isRecipeNamePalindrome(recipeName) {
     const cleanedStr = recipeName.toLowerCase().replace(/[^а-яёa-z0-9]/gi, '');
     if (cleanedStr.length === 0) return false;
 
-    // РЕШЕНИЕ 1: Через сравнение с перевернутой строкой 
+    // Через сравнение с перевернутой строкой 
     const reversedStr = cleanedStr.split('').reverse().join('');
     const isPalindromeSimple = cleanedStr === reversedStr;
 
-    // РЕШЕНИЕ 2: Через цикл while 
+    // Через цикл while 
     let isPalindromeLoop = true;
     let left = 0;
     let right = cleanedStr.length - 1;

@@ -1,5 +1,4 @@
 import { RecipeCardComponent } from '../../components/recipe-card/index.js';
-import { HeaderComponent } from '../../components/header/index.js';
 import { RecipePage } from '../recipe/index.js';  
 import { recipes } from '../../data/recipe.js';
 import { convertRecipeIdsToRange, findPalindromeRecipes } from '../../utils/recipeUtils.js';
@@ -8,6 +7,7 @@ export class MainPage {
     constructor(parent) {
         this.parent = parent;
         this.filteredRecipes = [...recipes];
+        this.allRecipes = [...recipes];
     }
 
     showRecipeRanges() {
@@ -102,36 +102,24 @@ export class MainPage {
     render() {
         this.parent.innerHTML = '';
         
-        const header = new HeaderComponent(this.parent);
-        header.render();
-
         const mainContent = document.createElement('div');
-        mainContent.className = 'container';
+        mainContent.className = 'container mt-4';
         this.parent.appendChild(mainContent);
 
-        const controlsDiv = document.createElement('div');
-        controlsDiv.className = 'd-flex justify-content-between align-items-center mb-4 flex-wrap';
-        controlsDiv.innerHTML = `
-            <h1>☕ Рецепты для кофемашины</h1>
-            <div class="btn-group mt-2 mt-md-0">
-                <button class="btn btn-success" id="add-recipe-btn">+ Копия</button>
-                <button class="btn btn-info" id="show-ranges-btn">Показать диапазоны ID</button>
-                <button class="btn btn-warning" id="show-palindromes-btn">Показать палиндромы</button>
+        mainContent.innerHTML = `
+            <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
+                <h1>☕ Рецепты для кофемашины</h1>
+                <div class="btn-group mt-2 mt-md-0">
+                    <button class="btn btn-success" id="add-recipe-btn">+ Копия</button>
+                    <button class="btn btn-info" id="show-ranges-btn">Показать диапазоны ID</button>
+                    <button class="btn btn-warning" id="show-palindromes-btn">Показать палиндромы</button>
+                </div>
             </div>
+            <div class="mb-4">
+                <input type="text" class="form-control" id="search-input" placeholder="Поиск рецептов...">
+            </div>
+            <div id="recipes-list" class="d-flex flex-column align-items-center"></div>
         `;
-        mainContent.appendChild(controlsDiv);
-
-        const searchDiv = document.createElement('div');
-        searchDiv.className = 'mb-4';
-        searchDiv.innerHTML = `
-            <input type="text" class="form-control" id="search-input" placeholder="Поиск рецептов...">
-        `;
-        mainContent.appendChild(searchDiv);
-
-        const listContainer = document.createElement('div');
-        listContainer.id = 'recipes-list';
-        listContainer.className = 'd-flex flex-column align-items-center';
-        mainContent.appendChild(listContainer);
 
         this.filteredRecipes = [...recipes];
         this.renderRecipes();
