@@ -15,7 +15,7 @@ recipesService.init(DATA_FILE_PATH);
 // 1. Встроенный middleware для парсинга JSON
 app.use(express.json());
 
-// 2. Логирующий middleware (как в методичке)
+// 2. Логирующий middleware 
 app.use((req, res, next) => {
     console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
     next(); // Обязательно вызываем next(), иначе запрос зависнет
