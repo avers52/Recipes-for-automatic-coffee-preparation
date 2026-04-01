@@ -1,81 +1,109 @@
-/* Стили для галереи */
-.models-grid {
+/* Сетка для ингредиентов */
+.ingredients-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     gap: 20px;
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
 }
 
-.model-card {
-    background: #3d2a17;
-    border-radius: 12px;
-    padding: 15px;
-    cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
-    text-align: center;
+@media (max-width: 900px) {
+    .ingredients-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
-.model-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+@media (max-width: 600px) {
+    .ingredients-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
-.preview-container {
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    background: #1a1a1a;
-    border-radius: 8px;
-    margin-bottom: 12px;
+/* Карточка */
+.ingredient-card {
+    background: white;
+    border-radius: 16px;
     overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+    display: flex;
+    flex-direction: column;  
+    height: 100%;
 }
 
-.preview-container canvas {
-    width: 100% !important;
-    height: 100% !important;
-    display: block;
+.ingredient-card:hover {
+    transform: translateY(-4px);
 }
 
-.model-card h3 {
-    margin: 10px 0 5px;
-    font-size: 1.1rem;
-    color: #f0e6d2;
+.ingredient-card-img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
 }
 
-.model-card p {
-    font-size: 0.75rem;
-    color: #b89a7a;
-    margin: 0;
+.ingredient-card-body {
+    padding: 16px;
+    flex: 1;               
+    display: flex;
+    flex-direction: column;
 }
 
-.gallery-header {
+.ingredient-card-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.ingredient-card-desc {
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 12px;
+}
+
+.ingredient-card-info {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+    font-size: 0.8rem;
+    color: #8b5a2b;
+    flex-wrap: wrap;
+}
+
+/* Контейнер для кнопок */
+.ingredient-card-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: auto;
+}
+
+/* Кнопки — компактные прямоугольные */
+.btn-view, .btn-delete {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.7rem;
+    font-weight: 500;
+    flex: 1;
     text-align: center;
-    margin-bottom: 30px;
+    transition: background 0.2s;
 }
 
-.gallery-header h1 {
-    color: #d4a574;
-    margin-bottom: 10px;
+.btn-view {
+    background: #d4a574;
+    color: white;
 }
 
-.upload-section {
-    text-align: center;
-    margin-bottom: 30px;
-    padding: 20px;
-    background: #3d2a17;
-    border-radius: 12px;
+.btn-view:hover {
+    background: #b87a3a;
 }
 
-.upload-section h3 {
-    margin-bottom: 10px;
-    color: #d4a574;
+.btn-delete {
+    background: #dc3545;
+    color: white;
 }
 
-.upload-section input {
-    padding: 10px;
-    background: #2b1b0e;
-    border: 1px solid #d4a574;
-    border-radius: 8px;
-    color: #f0e6d2;
+.btn-delete:hover {
+    background: #a71d2a;
 }

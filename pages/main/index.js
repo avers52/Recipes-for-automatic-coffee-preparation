@@ -1,104 +1,132 @@
-import { RecipeCardComponent } from '../../components/recipe-card/index.js';
-import { RecipePage } from '../recipe/index.js';  
-import { recipes } from '../../data/recipe.js';
+import { IngredientCardComponent } from '../../components/ingredient-card/index.js';
 import { convertRecipeIdsToRange, findPalindromeRecipes } from '../../utils/recipeUtils.js';
+import { ingredients } from '../../data/ingredients.js';  
+import { IngredientDetailPage } from '../ingredient-detail/index.js';
 
 export class MainPage {
     constructor(parent) {
         this.parent = parent;
-        this.filteredRecipes = [...recipes];
-        this.allRecipes = [...recipes];
+        this.filteredIngredients = [...ingredients];
+        this.allIngredients = [...ingredients];
     }
 
-    showRecipeRanges() {
-        const ids = recipes.map(r => r.id);
+    // Показать детальную страницу ингредиента
+    showIngredientDetail(ingredientId) {
+        const detailPage = new IngredientDetailPage(this.parent, ingredientId);
+        detailPage.render();
+    }
+
+
+    // Показать диапазоны ID (для ингредиентов)
+    showIngredientRanges() {
+        const ids = this.allIngredients.map(i => i.id);
         const rangeString = convertRecipeIdsToRange(ids);
-        alert(`ID рецептов в наличии: ${rangeString}`);
-        console.log('ID рецептов:', rangeString);
+        this.showMessage(`📊 Диапазоны ID ингредиентов: ${rangeString}`, 'info');
     }
 
-    showPalindromeRecipes() {
-        const palindromes = findPalindromeRecipes(recipes);
+    // Показать палиндромы (по названиям ингредиентов)
+    showPalindromeIngredients() {
+        const palindromes = this.allIngredients.filter(ing => 
+            this.isPalindrome(ing.name)
+        );
+        
         if (palindromes.length === 0) {
-            alert('Рецептов-палиндромов не найдено!');
+            this.showMessage('🔤 Ингредиентов-палиндромов не найдено!', 'warning');
         } else {
-            const names = palindromes.map(r => r.title).join(', ');
-            alert(`Найдены рецепты-палиндромы: ${names}`);
-            this.filteredRecipes = palindromes;
-            this.renderRecipes();
+            const names = palindromes.map(i => i.name).join(', ');
+            this.showMessage(`🔤 Найдены ингредиенты-палиндромы: ${names}`, 'success');
+            this.filteredIngredients = palindromes;
+            this.renderIngredients();
         }
     }
 
-    filterRecipes(searchTerm) {
+    // Вспомогательная функция проверки палиндрома
+    isPalindrome(str) {
+        const cleaned = str.toLowerCase().replace(/[^а-яёa-z0-9]/gi, '');
+        return cleaned === cleaned.split('').reverse().join('');
+    }
+
+    // Показать сообщение 
+    showMessage(text, type = 'info') {
+        const msgDiv = document.getElementById('stats-message');
+        if (msgDiv) {
+            msgDiv.innerHTML = `<div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                ${text}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>`;
+            setTimeout(() => {
+                msgDiv.innerHTML = '';
+            }, 3000);
+        }
+    }
+
+    // Фильтрация ингредиентов
+    filterIngredients(searchTerm) {
         if (!searchTerm) {
-            this.filteredRecipes = [...recipes];
+            this.filteredIngredients = [...this.allIngredients];
         } else {
-            this.filteredRecipes = recipes.filter(recipe => 
-                recipe.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                recipe.description.toLowerCase().includes(searchTerm.toLowerCase())
+            const term = searchTerm.toLowerCase();
+            this.filteredIngredients = this.allIngredients.filter(ing => 
+                ing.name.toLowerCase().includes(term) ||
+                ing.description.toLowerCase().includes(term) ||
+                ing.category.toLowerCase().includes(term)
             );
         }
-        this.renderRecipes();
+        this.renderIngredients();
     }
 
+    // Добавление копии первого ингредиента
     addFirstCardCopy() {
-        if (recipes.length > 0) {
-            const firstRecipe = recipes[0];
-            const newRecipe = {
-                ...firstRecipe,
-                id: Math.max(...recipes.map(r => r.id)) + 1,
-                title: `${firstRecipe.title} (копия)`
+        if (this.allIngredients.length > 0) {
+            const first = this.allIngredients[0];
+            const newIngredient = {
+                ...first,
+                id: Math.max(...this.allIngredients.map(i => i.id)) + 1,
+                name: `${first.name} (копия)`
             };
-            recipes.push(newRecipe);
-            this.filteredRecipes = [...recipes];
-            this.renderRecipes();
+            this.allIngredients.push(newIngredient);
+            this.filteredIngredients = [...this.allIngredients];
+            this.renderIngredients();
         }
     }
 
-    deleteRecipe(recipeId) {
-        const index = recipes.findIndex(r => r.id === recipeId);
+    // Удаление ингредиента
+    deleteIngredient(ingredientId) {
+        const index = this.allIngredients.findIndex(i => i.id === ingredientId);
         if (index !== -1) {
-            recipes.splice(index, 1);
-            this.filteredRecipes = [...recipes];
-            this.renderRecipes();
+            this.allIngredients.splice(index, 1);
+            this.filteredIngredients = [...this.allIngredients];
+            this.renderIngredients();
         }
     }
 
-    showRecipe(recipeId) {
-        console.log('Showing recipe:', recipeId);
-        const recipePage = new RecipePage(this.parent, recipeId);
-        recipePage.render();
-    }
-
-    renderRecipes() {
-        const listContainer = document.getElementById('recipes-list');
+    renderIngredients() {
+        const listContainer = document.getElementById('ingredients-list');
         if (listContainer) {
             listContainer.remove();
         }
 
         const container = document.createElement('div');
-        container.id = 'recipes-list';
-        container.className = 'd-flex flex-column align-items-center';
+        container.id = 'ingredients-list';
+        container.className = 'ingredients-grid';  
         this.parent.appendChild(container);
 
-        if (this.filteredRecipes.length === 0) {
-            container.innerHTML = '<div class="alert alert-info">Рецепты не найдены</div>';
+        if (this.filteredIngredients.length === 0) {
+            container.innerHTML = '<div class="alert alert-info">Ингредиенты не найдены</div>';
             return;
         }
 
-        this.filteredRecipes.forEach(recipeData => {
-            const recipeCard = new RecipeCardComponent(container, {
-                onDelete: (id) => this.deleteRecipe(id)
+        this.filteredIngredients.forEach(ingredientData => {
+            const ingredientCard = new IngredientCardComponent(container, {
+                onDelete: (id) => this.deleteIngredient(id),
+                onView: (id) => this.showIngredientDetail(id)   
             });
-            recipeCard.render(recipeData);
-        });
-
-        container.addEventListener('recipe-selected', (e) => {
-            console.log('Recipe selected event caught:', e.detail.recipeId);
-            this.showRecipe(e.detail.recipeId);
+            ingredientCard.render(ingredientData);
         });
     }
 
+
+    // ГЛАВНЫЙ РЕНДЕР
     render() {
         this.parent.innerHTML = '';
         
@@ -108,36 +136,38 @@ export class MainPage {
 
         mainContent.innerHTML = `
             <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
-                <h1>☕ Рецепты для кофемашины</h1>
+                <h1>📦 Ингредиенты для кофе</h1>
                 <div class="btn-group mt-2 mt-md-0">
-                    <button class="btn btn-success" id="add-recipe-btn">+ Копия</button>
-                    <button class="btn btn-info" id="show-ranges-btn">Показать диапазоны ID</button>
-                    <button class="btn btn-warning" id="show-palindromes-btn">Показать палиндромы</button>
+                    <button class="btn btn-success" id="add-ingredient-btn">+ Добавить ингредиент</button>
+                    <button class="btn btn-info" id="show-ranges-btn">📊 Диапазоны ID</button>
+                    <button class="btn btn-warning" id="show-palindromes-btn">🔤 Палиндромы</button>
                 </div>
             </div>
             <div class="mb-4">
-                <input type="text" class="form-control" id="search-input" placeholder="Поиск рецептов...">
+                <input type="text" class="form-control" id="search-input" placeholder="Поиск ингредиентов...">
             </div>
-            <div id="recipes-list" class="d-flex flex-column align-items-center"></div>
+            <div id="stats-message" class="mb-3"></div>
+            <div id="ingredients-list" class="ingredients-grid"></div>
         `;
 
-        this.filteredRecipes = [...recipes];
-        this.renderRecipes();
+        this.filteredIngredients = [...this.allIngredients];
+        this.renderIngredients();
 
+        // Обработчики событий
         document.getElementById('search-input').addEventListener('input', (e) => {
-            this.filterRecipes(e.target.value);
+            this.filterIngredients(e.target.value);
         });
 
-        document.getElementById('add-recipe-btn').addEventListener('click', () => {
+        document.getElementById('add-ingredient-btn').addEventListener('click', () => {
             this.addFirstCardCopy();
         });
 
         document.getElementById('show-ranges-btn').addEventListener('click', () => {
-            this.showRecipeRanges();
+            this.showIngredientRanges();
         });
 
         document.getElementById('show-palindromes-btn').addEventListener('click', () => {
-            this.showPalindromeRecipes();
+            this.showPalindromeIngredients();
         });
 
         this.parent.addEventListener('navigate-home', () => {

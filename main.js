@@ -1,4 +1,3 @@
-// main.js
 import { MainPage } from './pages/main/index.js';
 import { initGallery } from './app.js';
 
@@ -8,6 +7,11 @@ function showRecipes() {
     contentContainer.innerHTML = '<div id="recipes-root"></div>';
     const mainPage = new MainPage(contentContainer.querySelector('#recipes-root'));
     mainPage.render();
+    
+    // Обработчик возврата на главную с детальной страницы
+    contentContainer.addEventListener('back-to-list', () => {
+        showRecipes();
+    }, { once: true });
 }
 
 function showGallery() {
