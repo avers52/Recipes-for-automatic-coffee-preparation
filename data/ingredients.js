@@ -12,7 +12,7 @@ export const ingredients = [
         id: 2,
         name: "Молоко",
         description: "Пастеризованное молоко, жирность 3.5%",
-        image: "https://images.unsplash.com/photo-1563636619-e9143da7973b?w=600",
+        image: "https://main-cdn.sbermegamarket.ru/big1/hlr-system/518/226/957/451/053/100031005733b0.jpg",
         category: "молочные",
         unit: "мл",
         price: 80
@@ -21,7 +21,7 @@ export const ingredients = [
         id: 3,
         name: "Вода",
         description: "Фильтрованная вода",
-        image: "https://images.unsplash.com/photo-1546183483-9c09c8d6f52c?w=600",
+        image: "https://vodaplus.ru/upload/iblock/38e/f5orpy1i8z8lxaz9zykut01w8yob6h18.jpg",
         category: "основной",
         unit: "мл",
         price: 0
@@ -30,7 +30,7 @@ export const ingredients = [
         id: 4,
         name: "Сахар",
         description: "Тростниковый сахар",
-        image: "https://images.unsplash.com/photo-1589664601318-9cac6b5b8b8e?w=600",
+        image: "https://sc04.alicdn.com/kf/A688644fcc8ad4a8190570bb01b8adfe40/High-Quality-Fine-Granulated-White-Sugar-1KG-Natural-Refined-Cane-Sugar-Perfect-for-Baking-and-Cooking.jpg",
         category: "добавки",
         unit: "гр",
         price: 50
@@ -39,7 +39,7 @@ export const ingredients = [
         id: 5,
         name: "Какао-порошок",
         description: "Для украшения капучино",
-        image: "https://images.unsplash.com/photo-1542810636-712c9b5b6b1b?w=600",
+        image: "https://content2.flowwow-images.com/data/flowers/524x524/48/1633623050_93719148.jpg",
         category: "добавки",
         unit: "гр",
         price: 90
@@ -48,7 +48,7 @@ export const ingredients = [
         id: 6,
         name: "Мороженое",
         description: "Ванильное пломбир для глясе",
-        image: "https://images.unsplash.com/photo-1501443762994-82bd5dace89a?w=600",
+        image: "https://avatars.mds.yandex.net/get-mpic/16341179/2a00000198f092dc0dc652dc648aded8d212/orig",
         category: "десерты",
         unit: "гр",
         price: 150
