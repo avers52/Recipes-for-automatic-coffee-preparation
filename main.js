@@ -19,6 +19,12 @@ function showGallery() {
     initGallery();
 }
 
+function showIngredientForm(params) { 
+    contentContainer.innerHTML = '<div id="form-root"></div>';
+    const formPage = new IngredientFormPage(contentContainer.querySelector('#form-root'), params);
+    formPage.render();
+}
+
 // Навигация
 document.getElementById('nav-recipes')?.addEventListener('click', (e) => {
     e.preventDefault();
@@ -33,6 +39,10 @@ document.getElementById('nav-gallery')?.addEventListener('click', (e) => {
 document.getElementById('home-link')?.addEventListener('click', (e) => {
     e.preventDefault();
     showRecipes();
+});
+
+document.getElementById('add-ingredient-btn').addEventListener('click', () => {
+    showIngredientForm({}); 
 });
 
 // Проверяем параметр URL при загрузке

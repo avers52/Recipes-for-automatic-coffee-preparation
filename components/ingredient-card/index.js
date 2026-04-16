@@ -3,6 +3,7 @@ export class IngredientCardComponent {
         this.parent = parent;
         this.onDelete = callbacks.onDelete || (() => {});
         this.onView = callbacks.onView || (() => {});
+        this.onEdit = callbacks.onEdit || (() => {});  
     }
 
     getHTML(data) {
@@ -19,6 +20,7 @@ export class IngredientCardComponent {
                     </div>
                     <div class="ingredient-card-buttons">
                         <button class="btn-view" id="view-ingredient-${data.id}">🔍 Подробнее</button>
+                        <button class="btn-edit" id="edit-ingredient-${data.id}">✏️ Редактировать</button>  // 🆕
                         <button class="btn-delete" id="delete-ingredient-${data.id}">🗑️ Удалить</button>
                     </div>
                 </div>
@@ -32,6 +34,14 @@ export class IngredientCardComponent {
         if (viewBtn) {
             viewBtn.addEventListener('click', () => {
                 this.onView(data.id);
+            });
+        }
+
+        //  Кнопка "Редактировать"
+        const editBtn = document.getElementById(`edit-ingredient-${data.id}`);
+        if (editBtn) {
+            editBtn.addEventListener('click', () => {
+                this.onEdit(data.id);
             });
         }
 

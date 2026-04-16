@@ -1,21 +1,33 @@
 import { IngredientCardComponent } from '../../components/ingredient-card/index.js';
 import { convertRecipeIdsToRange, findPalindromeRecipes } from '../../utils/recipeUtils.js';
-import { ingredients } from '../../data/ingredients.js';  
 import { IngredientDetailPage } from '../ingredient-detail/index.js';
+import { ajax } from '../../modules/ajax.js';
+import { ingredientUrls } from '../../modules/ingredientUrls.js';
 
 export class MainPage {
     constructor(parent) {
         this.parent = parent;
-        this.filteredIngredients = [...ingredients];
-        this.allIngredients = [...ingredients];
+        this.filteredIngredients = [];
+        this.allIngredients = [];
+    }
+
+    loadIngredients() {
+        ajax.get(ingredientUrls.getIngredients(), (data, status) => {
+            if (status === 200 && data) {
+                this.allIngredients = data;
+                this.filteredIngredients = [...this.allIngredients];
+                this.renderIngredients();
+            } else {
+                this.showMessage('Ошибка загрузки данных с сервера', 'danger');
+            }
+        });
     }
 
     // Показать детальную страницу ингредиента
     showIngredientDetail(ingredientId) {
-        const detailPage = new IngredientDetailPage(this.parent, ingredientId);
+        const detailPage = new IngredientDetailPage(this.parent, ingredientId, this.allIngredients);
         detailPage.render();
     }
-
 
     // Показать диапазоны ID (для ингредиентов)
     showIngredientRanges() {
@@ -75,29 +87,38 @@ export class MainPage {
         this.renderIngredients();
     }
 
-    // Добавление копии первого ингредиента
     addFirstCardCopy() {
         if (this.allIngredients.length > 0) {
             const first = this.allIngredients[0];
             const newIngredient = {
-                ...first,
-                id: Math.max(...this.allIngredients.map(i => i.id)) + 1,
-                name: `${first.name} (копия)`
+                name: `${first.name} (копия)`,
+                description: first.description,
+                image: first.image,
+                category: first.category,
+                unit: first.unit,
+                price: first.price
             };
-            this.allIngredients.push(newIngredient);
-            this.filteredIngredients = [...this.allIngredients];
-            this.renderIngredients();
+            
+            ajax.post(ingredientUrls.createIngredient(), newIngredient, (data, status) => {
+                if (status === 201) {
+                    this.showMessage('✅ Ингредиент добавлен!', 'success');
+                    this.loadIngredients(); // перезагружаем список
+                } else {
+                    this.showMessage('❌ Ошибка при добавлении', 'danger');
+                }
+            });
         }
     }
 
-    // Удаление ингредиента
     deleteIngredient(ingredientId) {
-        const index = this.allIngredients.findIndex(i => i.id === ingredientId);
-        if (index !== -1) {
-            this.allIngredients.splice(index, 1);
-            this.filteredIngredients = [...this.allIngredients];
-            this.renderIngredients();
-        }
+        ajax.delete(ingredientUrls.deleteIngredientById(ingredientId), (data, status) => {
+            if (status === 204 || status === 200) {
+                this.showMessage('✅ Ингредиент удалён!', 'success');
+                this.loadIngredients(); // перезагружаем список
+            } else {
+                this.showMessage('❌ Ошибка при удалении', 'danger');
+            }
+        });
     }
 
     renderIngredients() {
@@ -125,7 +146,6 @@ export class MainPage {
         });
     }
 
-
     // ГЛАВНЫЙ РЕНДЕР
     render() {
         this.parent.innerHTML = '';
@@ -150,8 +170,7 @@ export class MainPage {
             <div id="ingredients-list" class="ingredients-grid"></div>
         `;
 
-        this.filteredIngredients = [...this.allIngredients];
-        this.renderIngredients();
+        this.loadIngredients();
 
         // Обработчики событий
         document.getElementById('search-input').addEventListener('input', (e) => {
