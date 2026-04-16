@@ -18,7 +18,4 @@ const writeData = (filePath, data) => {
     }
 };
 
-module.exports = {
-    readData,
-    writeData
-};
+module.exports = { readData, writeData };

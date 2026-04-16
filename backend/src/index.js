@@ -1,47 +1,49 @@
 const express = require('express');
 const path = require('path');
-const recipesRouter = require('./routes/recipes');
-const recipesService = require('./services/recipesService');
+const cors = require('cors');
+const ingredientsRouter = require('./routes/ingredients');
+const ingredientsService = require('./services/ingredientsService');
 
 const app = express();
 const PORT = 3000;
 
-// Определяем путь к файлу данных
-const DATA_FILE_PATH = path.join(__dirname, 'data/recipes.json');
-
-// Инициализируем сервис с путем к файлу данных
-recipesService.init(DATA_FILE_PATH);
-
-// 1. Встроенный middleware для парсинга JSON
+// CORS (для работы с фронтендом на другом порту)
+app.use(cors());
 app.use(express.json());
 
-// 2. Логирующий middleware 
+// Путь к файлу данных
+const INGREDIENTS_DATA_PATH = path.join(__dirname, 'data/ingredients.json');
+
+// Инициализация сервиса
+ingredientsService.init(INGREDIENTS_DATA_PATH);
+
+// Логирующий middleware
 app.use((req, res, next) => {
     console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
-    next(); // Обязательно вызываем next(), иначе запрос зависнет
+    next();
 });
 
-// 3. Подключение маршрутов (все начинаются с /api/recipes)
-app.use('/api/recipes', recipesRouter);
+// Подключение маршрутов
+app.use('/api/ingredients', ingredientsRouter);
 
-// 4. Глобальная обработка 404
+// Глобальная обработка 404
 app.use((req, res) => {
     res.status(404).json({ error: 'Маршрут не найден' });
 });
 
-// 5. Обработчик ошибок (error handler)
+// Обработчик ошибок
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).json({ error: 'Внутренняя ошибка сервера' });
 });
 
-// 6. Запуск сервера
+// Запуск сервера
 app.listen(PORT, () => {
-    console.log(`🍵 Сервер рецептов запущен по адресу http://localhost:${PORT}`);
+    console.log(`🍵 Сервер ингредиентов запущен по адресу http://localhost:${PORT}`);
     console.log(`📋 Доступные эндпоинты:`);
-    console.log(`   GET    /api/recipes - получить все рецепты`);
-    console.log(`   GET    /api/recipes/:id - получить рецепт по ID`);
-    console.log(`   POST   /api/recipes - создать рецепт`);
-    console.log(`   PATCH  /api/recipes/:id - обновить рецепт`);
-    console.log(`   DELETE /api/recipes/:id - удалить рецепт`);
+    console.log(`   GET    /api/ingredients`);
+    console.log(`   GET    /api/ingredients/:id`);
+    console.log(`   POST   /api/ingredients`);
+    console.log(`   PATCH  /api/ingredients/:id`);
+    console.log(`   DELETE /api/ingredients/:id`);
 });
