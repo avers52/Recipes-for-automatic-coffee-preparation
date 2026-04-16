@@ -1,5 +1,5 @@
-// ЗАДАНИЕ 2.2: Преобразование ID рецептов в диапазоны
-export function convertRecipeIdsToRange(idsArray) {
+// ЗАДАНИЕ 2.2: Преобразование ID ингредиентов в диапазоны
+export function convertIngredientIdsToRange(idsArray) {
     if (!idsArray || idsArray.length === 0) return '';
 
     // Сортируем ID по возрастанию
@@ -23,12 +23,12 @@ export function convertRecipeIdsToRange(idsArray) {
     return ranges.join(', ');
 }
 
-// ЗАДАНИЕ 3.8: Проверка, является ли название рецепта палиндромом 
-export function isRecipeNamePalindrome(recipeName) {
-    if (typeof recipeName !== 'string') return false;
+// ЗАДАНИЕ 3.8: Проверка, является ли название ингредиента палиндромом 
+export function isIngredientNamePalindrome(ingredientName) {
+    if (typeof ingredientName !== 'string') return false;
 
     // Очищаем строку: убираем пробелы, знаки препинания, приводим к нижнему регистру
-    const cleanedStr = recipeName.toLowerCase().replace(/[^а-яёa-z0-9]/gi, '');
+    const cleanedStr = ingredientName.toLowerCase().replace(/[^а-яёa-z0-9]/gi, '');  // ← было IngredientName (с большой буквы)
     if (cleanedStr.length === 0) return false;
 
     // Через сравнение с перевернутой строкой 
@@ -52,7 +52,7 @@ export function isRecipeNamePalindrome(recipeName) {
     return isPalindromeLoop;
 }
 
-//Дополнительная функция: найти все рецепты-палиндромы 
-export function findPalindromeRecipes(recipesArray) {
-    return recipesArray.filter(recipe => isRecipeNamePalindrome(recipe.title));
+// Дополнительная функция: найти все ингредиенты-палиндромы 
+export function findPalindromeIngredients(ingredientsArray) {
+    return ingredientsArray.filter(ingredient => isIngredientNamePalindrome(ingredient.name));  // ← было ingredient.title, нужно ingredient.name
 }

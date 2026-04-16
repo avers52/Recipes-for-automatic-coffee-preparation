@@ -1,5 +1,5 @@
 import { IngredientCardComponent } from '../../components/ingredient-card/index.js';
-import { convertRecipeIdsToRange, findPalindromeRecipes } from '../../utils/recipeUtils.js';
+import { convertIngredientIdsToRange, findPalindromeIngredients } from '../../utils/IngredientsUtils.js';
 import { ingredients } from '../../data/ingredients.js';  
 import { IngredientDetailPage } from '../ingredient-detail/index.js';
 
@@ -16,19 +16,16 @@ export class MainPage {
         detailPage.render();
     }
 
-
     // Показать диапазоны ID (для ингредиентов)
     showIngredientRanges() {
         const ids = this.allIngredients.map(i => i.id);
-        const rangeString = convertRecipeIdsToRange(ids);
+        const rangeString = convertIngredientIdsToRange(ids);
         this.showMessage(`📊 Диапазоны ID ингредиентов: ${rangeString}`, 'info');
     }
 
     // Показать палиндромы (по названиям ингредиентов)
     showPalindromeIngredients() {
-        const palindromes = this.allIngredients.filter(ing => 
-            this.isPalindrome(ing.name)
-        );
+        const palindromes = findPalindromeIngredients(this.allIngredients);
         
         if (palindromes.length === 0) {
             this.showMessage('🔤 Ингредиентов-палиндромов не найдено!', 'warning');
@@ -38,12 +35,6 @@ export class MainPage {
             this.filteredIngredients = palindromes;
             this.renderIngredients();
         }
-    }
-
-    // Вспомогательная функция проверки палиндрома
-    isPalindrome(str) {
-        const cleaned = str.toLowerCase().replace(/[^а-яёa-z0-9]/gi, '');
-        return cleaned === cleaned.split('').reverse().join('');
     }
 
     // Показать сообщение 
@@ -124,7 +115,6 @@ export class MainPage {
             ingredientCard.render(ingredientData);
         });
     }
-
 
     // ГЛАВНЫЙ РЕНДЕР
     render() {
