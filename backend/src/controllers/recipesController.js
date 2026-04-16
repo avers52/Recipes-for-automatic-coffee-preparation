@@ -21,7 +21,7 @@ const getRecipeById = (req, res) => {
 
 // POST /recipes - создать новый рецепт
 const createRecipe = (req, res) => {
-    const { src, title, description, ingredients, steps, time } = req.body;
+    const { src, title, description, ingredients, time } = req.body;
 
     // Простая валидация обязательных полей
     if (!title || !description) {
