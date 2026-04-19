@@ -1,7 +1,8 @@
 const ingredientsService = require('../services/ingredientsService');
 
 const getAll = (req, res) => {
-    const items = ingredientsService.findAll();
+    const { name } = req.query;  
+    const items = ingredientsService.findAll(name);
     res.json(items);
 };
 

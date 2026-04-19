@@ -5,8 +5,14 @@ const init = (filePath) => {
     dataFilePath = filePath; 
 };
 
-const findAll = () => {
-    return fileService.readData(dataFilePath);
+const findAll = (name) => {  
+    const ingredients = fileService.readData(dataFilePath);
+    if (name) {
+        return ingredients.filter(ing => 
+            ing.name.toLowerCase().includes(name.toLowerCase())
+        );
+    }
+    return ingredients;
 };
 
 const findOne = (id) => {
