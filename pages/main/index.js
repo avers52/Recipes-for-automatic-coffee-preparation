@@ -84,7 +84,8 @@ export class MainPage {
         this.filteredIngredients.forEach(ingredientData => {
             const ingredientCard = new IngredientCardComponent(container, {
                 onDelete: (id) => this.deleteIngredient(id),
-                onView: (id) => this.showIngredientDetail(id)
+                onView: (id) => this.showIngredientDetail(id),
+                onEdit: (id) => window.location.hash = `ingredient-form/edit/${id}`  
             });
             ingredientCard.render(ingredientData);
         });
@@ -124,5 +125,6 @@ export class MainPage {
         this.parent.addEventListener('navigate-home', () => {
             this.render();
         });
+
     }
 }

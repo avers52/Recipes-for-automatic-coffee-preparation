@@ -74,25 +74,25 @@ export class IngredientDetailPage {
     }
 
     addListeners() {
-        document.getElementById('back-to-list')?.addEventListener('click', () => {
-            const event = new CustomEvent('back-to-list', { bubbles: true });
-            document.getElementById('app-content')?.dispatchEvent(event);
-        });
-
-        document.getElementById('edit-ingredient')?.addEventListener('click', () => {
-            window.location.href = `#ingredient-form/edit/${this.ingredientId}`;
-        });
-
-        document.getElementById('delete-ingredient')?.addEventListener('click', () => {
-            if (confirm(`Удалить ингредиент "${this.ingredient.name}"?`)) {
-                ajax.delete(ingredientUrls.deleteIngredientById(this.ingredientId), (data, status) => {
-                    if (status === 204 || status === 200) {
-                        const event = new CustomEvent('back-to-list', { bubbles: true });
-                        document.getElementById('app-content')?.dispatchEvent(event);
-                    }
-                });
-            }
-        });
+        // Кнопка "Назад"
+        const backBtn = document.getElementById('back-to-list');
+        if (backBtn) {
+            backBtn.addEventListener('click', () => {
+                window.location.hash = '';  // ← возврат на главную
+            });
+        }
+    
+        // Кнопка "Удалить"
+        const deleteBtn = document.getElementById('delete-ingredient');
+        if (deleteBtn) {
+            deleteBtn.addEventListener('click', () => {
+                if (confirm(`Удалить ингредиент "${this.ingredient.name}"?`)) {
+                    ajax.delete(ingredientUrls.deleteIngredientById(this.ingredient.id), () => {
+                        window.location.hash = '';
+                    });
+                }
+            });
+        }
     }
 
     render() {

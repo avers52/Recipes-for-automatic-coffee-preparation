@@ -1,9 +1,10 @@
+// components/ingredient-card/index.js
 export class IngredientCardComponent {
     constructor(parent, callbacks = {}) {
         this.parent = parent;
         this.onDelete = callbacks.onDelete || (() => {});
         this.onView = callbacks.onView || (() => {});
-        this.onEdit = callbacks.onEdit || (() => {});  
+        this.onEdit = callbacks.onEdit || (() => {});  // ← ДОБАВИТЬ
     }
 
     getHTML(data) {
@@ -19,9 +20,9 @@ export class IngredientCardComponent {
                         <span>💰 ${data.price} ₽</span>
                     </div>
                     <div class="ingredient-card-buttons">
-                        <button class="btn-view" id="view-ingredient-${data.id}">🔍 Подробнее</button>
-                        <button class="btn-edit" id="edit-ingredient-${data.id}">✏️ Редактировать</button>
-                        <button class="btn-delete" id="delete-ingredient-${data.id}">🗑️ Удалить</button>
+                        <button class="btn-view" id="view-${data.id}">🔍 Подробнее</button>
+                        <button class="btn-edit" id="edit-${data.id}">✏️ Редактировать</button>
+                        <button class="btn-delete" id="delete-${data.id}">🗑️ Удалить</button>
                     </div>
                 </div>
             </div>
@@ -30,30 +31,21 @@ export class IngredientCardComponent {
 
     addListeners(data) {
         // Кнопка "Подробнее"
-        const viewBtn = document.getElementById(`view-ingredient-${data.id}`);
-        if (viewBtn) {
-            viewBtn.addEventListener('click', () => {
-                this.onView(data.id);
-            });
-        }
+        document.getElementById(`view-${data.id}`)?.addEventListener('click', () => {
+            this.onView(data.id);
+        });
 
-        //  Кнопка "Редактировать"
-        const editBtn = document.getElementById(`edit-ingredient-${data.id}`);
-        if (editBtn) {
-            editBtn.addEventListener('click', () => {
-                this.onEdit(data.id);
-            });
-        }
+        // Кнопка "Редактировать" ← ДОБАВИТЬ
+        document.getElementById(`edit-${data.id}`)?.addEventListener('click', () => {
+            this.onEdit(data.id);
+        });
 
         // Кнопка "Удалить"
-        const deleteBtn = document.getElementById(`delete-ingredient-${data.id}`);
-        if (deleteBtn) {
-            deleteBtn.addEventListener('click', () => {
-                if (confirm(`Удалить ингредиент "${data.name}"?`)) {
-                    this.onDelete(data.id);
-                }
-            });
-        }
+        document.getElementById(`delete-${data.id}`)?.addEventListener('click', () => {
+            if (confirm(`Удалить ингредиент "${data.name}"?`)) {
+                this.onDelete(data.id);
+            }
+        });
     }
 
     render(data) {
