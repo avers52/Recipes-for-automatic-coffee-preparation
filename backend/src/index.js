@@ -12,7 +12,7 @@ app.use(cors());
 app.use(express.json());
 
 // Путь к файлу данных
-const INGREDIENTS_DATA_PATH = path.join(__dirname, 'data/ingredients.json');
+const INGREDIENTS_DATA_PATH = path.join(__dirname, 'data', 'ingredients.json');
 
 // Инициализация сервиса
 ingredientsService.init(INGREDIENTS_DATA_PATH);
