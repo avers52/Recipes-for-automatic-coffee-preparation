@@ -1,7 +1,7 @@
 import { IngredientCardComponent } from '../../components/ingredient-card/index.js';
 import { IngredientDetailPage } from '../ingredient-detail/index.js';
-import { ajax } from '../../modules/ajax.js';
 import { ingredientUrls } from '../../modules/ingredientUrls.js';
+import { fetchClient } from '../../modules/fetch.js';
 
 export class MainPage {
     constructor(parent) {
@@ -10,34 +10,23 @@ export class MainPage {
         this.allIngredients = [];
     }
 
-    // Загрузка данных с сервера
-    loadIngredients() {
-        ajax.get(ingredientUrls.getIngredients(), (data, status) => {
-            if (status === 200 && data) {
-                this.allIngredients = data;
-                this.filteredIngredients = [...this.allIngredients];
-                this.renderIngredients();
-            }
-        });
-    }
-
-    // Фильтрация
-    filterIngredients(searchTerm) {
-        if (!searchTerm) {
+    async loadIngredients(searchTerm = '') {
+        try {
+            const url = ingredientUrls.getIngredients(searchTerm);
+            const data = await fetchClient.get(url);
+            this.allIngredients = data;
             this.filteredIngredients = [...this.allIngredients];
-        } else {
-            const term = searchTerm.toLowerCase();
-            this.filteredIngredients = this.allIngredients.filter(ing => 
-                ing.name.toLowerCase().includes(term) ||
-                ing.description.toLowerCase().includes(term) ||
-                ing.category.toLowerCase().includes(term)
-            );
+            this.renderIngredients();
+        } catch (error) {
+            console.error('Ошибка загрузки:', error);
         }
-        this.renderIngredients();
     }
 
-    // Добавление копии (POST)
-    addFirstCardCopy() {
+    filterIngredients(searchTerm) {
+        this.loadIngredients(searchTerm);
+    }
+
+    async addFirstCardCopy() {
         if (this.allIngredients.length > 0) {
             const first = this.allIngredients[0];
             const newIngredient = {
@@ -48,17 +37,22 @@ export class MainPage {
                 unit: first.unit,
                 price: first.price
             };
-            ajax.post(ingredientUrls.createIngredient(), newIngredient, (data, status) => {
-                if (status === 201) this.loadIngredients();
-            });
+            try {
+                await fetchClient.post(ingredientUrls.createIngredient(), newIngredient);
+                this.loadIngredients();
+            } catch (error) {
+                console.error('Ошибка добавления:', error);
+            }
         }
     }
 
-    // Удаление (DELETE)
-    deleteIngredient(ingredientId) {
-        ajax.delete(ingredientUrls.deleteIngredientById(ingredientId), (data, status) => {
-            if (status === 204 || status === 200) this.loadIngredients();
-        });
+    async deleteIngredient(ingredientId) {
+        try {
+            await fetchClient.delete(ingredientUrls.deleteIngredientById(ingredientId));
+            this.loadIngredients();
+        } catch (error) {
+            console.error('Ошибка удаления:', error);
+        }
     }
 
     // Показать детальную страницу
@@ -85,7 +79,7 @@ export class MainPage {
             const ingredientCard = new IngredientCardComponent(container, {
                 onDelete: (id) => this.deleteIngredient(id),
                 onView: (id) => this.showIngredientDetail(id),
-                onEdit: (id) => window.location.hash = `ingredient-form/edit/${id}`  
+                onEdit: (id) => window.location.hash = `ingredient-form/edit/${id}`
             });
             ingredientCard.render(ingredientData);
         });
@@ -125,6 +119,5 @@ export class MainPage {
         this.parent.addEventListener('navigate-home', () => {
             this.render();
         });
-
     }
 }

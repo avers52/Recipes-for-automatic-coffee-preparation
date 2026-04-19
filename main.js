@@ -22,7 +22,7 @@ function showIngredientDetail(ingredientId) {
     detailPage.render();
 }
 
-// Проверяем существование элементов перед добавлением обработчиков
+// Навигация
 const navRecipes = document.getElementById('nav-recipes');
 const homeLink = document.getElementById('home-link');
 

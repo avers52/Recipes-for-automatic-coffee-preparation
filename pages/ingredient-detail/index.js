@@ -1,4 +1,4 @@
-import { ajax } from '../../modules/ajax.js';
+import { fetchClient } from '../../modules/fetch.js';
 import { ingredientUrls } from '../../modules/ingredientUrls.js';
 
 export class IngredientDetailPage {
@@ -8,15 +8,16 @@ export class IngredientDetailPage {
         this.ingredient = null;
     }
 
-    loadIngredient() {
-        ajax.get(ingredientUrls.getIngredientById(this.ingredientId), (data, status) => {
-            if (status === 200 && data) {
-                this.ingredient = data;
-                this.renderData();
-            } else {
-                this.showError();
-            }
-        });
+    async loadIngredient() {
+        try {
+            const url = ingredientUrls.getIngredientById(this.ingredientId);
+            const data = await fetchClient.get(url);
+            this.ingredient = data;
+            this.renderData();
+        } catch (error) {
+            console.error('Ошибка загрузки ингредиента:', error);
+            this.showError();
+        }
     }
 
     getHTML() {
@@ -27,14 +28,11 @@ export class IngredientDetailPage {
         return `
             <div class="container mt-4">
                 <button class="btn btn-secondary mb-3" id="back-to-list">← Назад к списку</button>
-                
-                <div class="card mb-4">
+                <div class="card">
                     <div class="row g-0">
                         <div class="col-md-5">
-                            <img src="${this.ingredient.image}" 
-                                 class="img-fluid rounded-start" 
-                                 alt="${this.ingredient.name}"
-                                 style="width: 100%; max-height: 280px; object-fit: cover;">
+                            <img src="${this.ingredient.image}" class="img-fluid rounded-start" 
+                                 alt="${this.ingredient.name}" style="width: 100%; max-height: 300px; object-fit: cover;">
                         </div>
                         <div class="col-md-7">
                             <div class="card-body">
@@ -75,24 +73,27 @@ export class IngredientDetailPage {
 
     addListeners() {
         // Кнопка "Назад"
-        const backBtn = document.getElementById('back-to-list');
-        if (backBtn) {
-            backBtn.addEventListener('click', () => {
-                window.location.hash = '';  // ← возврат на главную
-            });
-        }
-    
+        document.getElementById('back-to-list')?.addEventListener('click', () => {
+            window.location.hash = '';  
+            window.location.reload();   
+        });
+
+        // Кнопка "Редактировать"
+        document.getElementById('edit-ingredient')?.addEventListener('click', () => {
+            window.location.hash = `ingredient-form/edit/${this.ingredientId}`;
+        });
+
         // Кнопка "Удалить"
-        const deleteBtn = document.getElementById('delete-ingredient');
-        if (deleteBtn) {
-            deleteBtn.addEventListener('click', () => {
-                if (confirm(`Удалить ингредиент "${this.ingredient.name}"?`)) {
-                    ajax.delete(ingredientUrls.deleteIngredientById(this.ingredient.id), () => {
-                        window.location.hash = '';
-                    });
+        document.getElementById('delete-ingredient')?.addEventListener('click', async () => {
+            if (confirm(`Удалить ингредиент "${this.ingredient.name}"?`)) {
+                try {
+                    await fetchClient.delete(ingredientUrls.deleteIngredientById(this.ingredientId));
+                    window.location.hash = '';
+                } catch (error) {
+                    console.error('Ошибка удаления:', error);
                 }
-            });
-        }
+            }
+        });
     }
 
     render() {

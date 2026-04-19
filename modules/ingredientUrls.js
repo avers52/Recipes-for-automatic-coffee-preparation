@@ -3,7 +3,10 @@ export class IngredientUrls {
         this.baseUrl = 'http://localhost:3000/api';
     }
 
-    getIngredients() {
+    getIngredients(name) {
+        if (name) {
+            return `${this.baseUrl}/ingredients?name=${encodeURIComponent(name)}`;
+        }
         return `${this.baseUrl}/ingredients`;
     }
 
