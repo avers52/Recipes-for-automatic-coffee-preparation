@@ -20,7 +20,7 @@ export class IngredientCardComponent {
                     </div>
                     <div class="ingredient-card-buttons">
                         <button class="btn-view" id="view-ingredient-${data.id}">🔍 Подробнее</button>
-                        <button class="btn-edit" id="edit-ingredient-${data.id}">✏️ Редактировать</button>  // 🆕
+                        <button class="btn-edit" id="edit-ingredient-${data.id}">✏️ Редактировать</button>
                         <button class="btn-delete" id="delete-ingredient-${data.id}">🗑️ Удалить</button>
                     </div>
                 </div>
