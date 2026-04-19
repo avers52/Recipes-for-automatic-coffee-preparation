@@ -1,55 +1,62 @@
 import { MainPage } from './pages/main/index.js';
+import { IngredientFormPage } from './pages/ingredient-form/index.js';
+import { IngredientDetailPage } from './pages/ingredient-detail/index.js';
 
 const contentContainer = document.getElementById('app-content');
 
-function showRecipes() {
-    contentContainer.innerHTML = '<div id="recipes-root"></div>';
-    const mainPage = new MainPage(contentContainer.querySelector('#recipes-root'));
+function showMainPage() {
+    contentContainer.innerHTML = '<div id="main-root"></div>';
+    const mainPage = new MainPage(contentContainer.querySelector('#main-root'));
     mainPage.render();
-    
-    // Обработчик возврата на главную с детальной страницы
-    contentContainer.addEventListener('back-to-list', () => {
-        showRecipes();
-    }, { once: true });
 }
 
-function showGallery() {
-    contentContainer.innerHTML = '<div id="gallery-root"></div>';
-    initGallery();
-}
-
-function showIngredientForm(params) { 
+function showIngredientForm(params = {}) {
     contentContainer.innerHTML = '<div id="form-root"></div>';
     const formPage = new IngredientFormPage(contentContainer.querySelector('#form-root'), params);
     formPage.render();
 }
 
-// Навигация
-document.getElementById('nav-recipes')?.addEventListener('click', (e) => {
-    e.preventDefault();
-    showRecipes();
-});
-
-document.getElementById('nav-gallery')?.addEventListener('click', (e) => {
-    e.preventDefault();
-    showGallery();
-});
-
-document.getElementById('home-link')?.addEventListener('click', (e) => {
-    e.preventDefault();
-    showRecipes();
-});
-
-document.getElementById('add-ingredient-btn').addEventListener('click', () => {
-    showIngredientForm({}); 
-});
-
-// Проверяем параметр URL при загрузке
-const urlParams = new URLSearchParams(window.location.search);
-if (urlParams.get('view') === 'gallery') {
-    showGallery();
-} else {
-    showRecipes();
+function showIngredientDetail(ingredientId) {
+    contentContainer.innerHTML = '<div id="detail-root"></div>';
+    const detailPage = new IngredientDetailPage(contentContainer.querySelector('#detail-root'), ingredientId);
+    detailPage.render();
 }
 
-// npm install bootstrap
+// Проверяем существование элементов перед добавлением обработчиков
+const navRecipes = document.getElementById('nav-recipes');
+const homeLink = document.getElementById('home-link');
+
+if (navRecipes) {
+    navRecipes.addEventListener('click', (e) => {
+        e.preventDefault();
+        showMainPage();
+        window.location.hash = '';
+    });
+}
+
+if (homeLink) {
+    homeLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        showMainPage();
+        window.location.hash = '';
+    });
+}
+
+// Обработка hash URL
+window.addEventListener('hashchange', () => {
+    const hash = window.location.hash;
+    if (hash.startsWith('#ingredient-form/edit/')) {
+        const id = hash.split('/').pop();
+        showIngredientForm({ id });
+    } else if (hash === '#ingredient-form/new') {
+        showIngredientForm({});
+    } else if (hash.startsWith('#ingredient-detail/')) {
+        const id = hash.split('/').pop();
+        showIngredientDetail(id);
+    } else {
+        showMainPage();
+    }
+});
+
+// Старт
+showMainPage();
