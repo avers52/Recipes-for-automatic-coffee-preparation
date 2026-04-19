@@ -1,5 +1,4 @@
 import { IngredientCardComponent } from '../../components/ingredient-card/index.js';
-import { convertRecipeIdsToRange, findPalindromeRecipes } from '../../utils/recipeUtils.js';
 import { IngredientDetailPage } from '../ingredient-detail/index.js';
 import { ajax } from '../../modules/ajax.js';
 import { ingredientUrls } from '../../modules/ingredientUrls.js';
@@ -11,68 +10,18 @@ export class MainPage {
         this.allIngredients = [];
     }
 
+    // Загрузка данных с сервера
     loadIngredients() {
         ajax.get(ingredientUrls.getIngredients(), (data, status) => {
             if (status === 200 && data) {
                 this.allIngredients = data;
                 this.filteredIngredients = [...this.allIngredients];
                 this.renderIngredients();
-            } else {
-                this.showMessage('Ошибка загрузки данных с сервера', 'danger');
             }
         });
     }
 
-    // Показать детальную страницу ингредиента
-    showIngredientDetail(ingredientId) {
-        const detailPage = new IngredientDetailPage(this.parent, ingredientId, this.allIngredients);
-        detailPage.render();
-    }
-
-    // Показать диапазоны ID (для ингредиентов)
-    showIngredientRanges() {
-        const ids = this.allIngredients.map(i => i.id);
-        const rangeString = convertRecipeIdsToRange(ids);
-        this.showMessage(`📊 Диапазоны ID ингредиентов: ${rangeString}`, 'info');
-    }
-
-    // Показать палиндромы (по названиям ингредиентов)
-    showPalindromeIngredients() {
-        const palindromes = this.allIngredients.filter(ing => 
-            this.isPalindrome(ing.name)
-        );
-        
-        if (palindromes.length === 0) {
-            this.showMessage('🔤 Ингредиентов-палиндромов не найдено!', 'warning');
-        } else {
-            const names = palindromes.map(i => i.name).join(', ');
-            this.showMessage(`🔤 Найдены ингредиенты-палиндромы: ${names}`, 'success');
-            this.filteredIngredients = palindromes;
-            this.renderIngredients();
-        }
-    }
-
-    // Вспомогательная функция проверки палиндрома
-    isPalindrome(str) {
-        const cleaned = str.toLowerCase().replace(/[^а-яёa-z0-9]/gi, '');
-        return cleaned === cleaned.split('').reverse().join('');
-    }
-
-    // Показать сообщение 
-    showMessage(text, type = 'info') {
-        const msgDiv = document.getElementById('stats-message');
-        if (msgDiv) {
-            msgDiv.innerHTML = `<div class="alert alert-${type} alert-dismissible fade show" role="alert">
-                ${text}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>`;
-            setTimeout(() => {
-                msgDiv.innerHTML = '';
-            }, 3000);
-        }
-    }
-
-    // Фильтрация ингредиентов
+    // Фильтрация
     filterIngredients(searchTerm) {
         if (!searchTerm) {
             this.filteredIngredients = [...this.allIngredients];
@@ -87,6 +36,7 @@ export class MainPage {
         this.renderIngredients();
     }
 
+    // Добавление копии (POST)
     addFirstCardCopy() {
         if (this.allIngredients.length > 0) {
             const first = this.allIngredients[0];
@@ -98,38 +48,32 @@ export class MainPage {
                 unit: first.unit,
                 price: first.price
             };
-            
             ajax.post(ingredientUrls.createIngredient(), newIngredient, (data, status) => {
-                if (status === 201) {
-                    this.showMessage('✅ Ингредиент добавлен!', 'success');
-                    this.loadIngredients(); // перезагружаем список
-                } else {
-                    this.showMessage('❌ Ошибка при добавлении', 'danger');
-                }
+                if (status === 201) this.loadIngredients();
             });
         }
     }
 
+    // Удаление (DELETE)
     deleteIngredient(ingredientId) {
         ajax.delete(ingredientUrls.deleteIngredientById(ingredientId), (data, status) => {
-            if (status === 204 || status === 200) {
-                this.showMessage('✅ Ингредиент удалён!', 'success');
-                this.loadIngredients(); // перезагружаем список
-            } else {
-                this.showMessage('❌ Ошибка при удалении', 'danger');
-            }
+            if (status === 204 || status === 200) this.loadIngredients();
         });
+    }
+
+    // Показать детальную страницу
+    showIngredientDetail(ingredientId) {
+        const detailPage = new IngredientDetailPage(this.parent, ingredientId);
+        detailPage.render();
     }
 
     renderIngredients() {
         const listContainer = document.getElementById('ingredients-list');
-        if (listContainer) {
-            listContainer.remove();
-        }
+        if (listContainer) listContainer.remove();
 
         const container = document.createElement('div');
         container.id = 'ingredients-list';
-        container.className = 'ingredients-grid';  
+        container.className = 'ingredients-grid';
         this.parent.appendChild(container);
 
         if (this.filteredIngredients.length === 0) {
@@ -140,13 +84,12 @@ export class MainPage {
         this.filteredIngredients.forEach(ingredientData => {
             const ingredientCard = new IngredientCardComponent(container, {
                 onDelete: (id) => this.deleteIngredient(id),
-                onView: (id) => this.showIngredientDetail(id)   
+                onView: (id) => this.showIngredientDetail(id)
             });
             ingredientCard.render(ingredientData);
         });
     }
 
-    // ГЛАВНЫЙ РЕНДЕР
     render() {
         this.parent.innerHTML = '';
         
@@ -159,8 +102,6 @@ export class MainPage {
                 <h1>📦 Ингредиенты для кофе</h1>
                 <div class="btn-group mt-2 mt-md-0">
                     <button class="btn btn-success" id="add-ingredient-btn">+ Добавить ингредиент</button>
-                    <button class="btn btn-info" id="show-ranges-btn">📊 Диапазоны ID</button>
-                    <button class="btn btn-warning" id="show-palindromes-btn">🔤 Палиндромы</button>
                 </div>
             </div>
             <div class="mb-4">
@@ -172,21 +113,12 @@ export class MainPage {
 
         this.loadIngredients();
 
-        // Обработчики событий
         document.getElementById('search-input').addEventListener('input', (e) => {
             this.filterIngredients(e.target.value);
         });
 
         document.getElementById('add-ingredient-btn').addEventListener('click', () => {
             this.addFirstCardCopy();
-        });
-
-        document.getElementById('show-ranges-btn').addEventListener('click', () => {
-            this.showIngredientRanges();
-        });
-
-        document.getElementById('show-palindromes-btn').addEventListener('click', () => {
-            this.showPalindromeIngredients();
         });
 
         this.parent.addEventListener('navigate-home', () => {

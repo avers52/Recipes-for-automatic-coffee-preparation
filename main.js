@@ -1,5 +1,4 @@
 import { MainPage } from './pages/main/index.js';
-import { initGallery } from './app.js';
 
 const contentContainer = document.getElementById('app-content');
 
