@@ -4,7 +4,7 @@ export class IngredientUrls {
     }
 
     getIngredients(name) {
-        if (name) {
+        if (name && name.trim() !== '') {
             return `${this.baseUrl}/ingredients?name=${encodeURIComponent(name)}`;
         }
         return `${this.baseUrl}/ingredients`;
