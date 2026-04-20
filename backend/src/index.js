@@ -7,24 +7,29 @@ const ingredientsService = require('./services/ingredientsService');
 const app = express();
 const PORT = 3000;
 
-// CORS (для работы с фронтендом на другом порту)
 app.use(cors());
 app.use(express.json());
+app.use(express.static(path.join(__dirname, '..', 'public')));
 
 // Путь к файлу данных
 const INGREDIENTS_DATA_PATH = path.join(__dirname, 'data', 'ingredients.json');
-
-// Инициализация сервиса
 ingredientsService.init(INGREDIENTS_DATA_PATH);
 
-// Логирующий middleware
 app.use((req, res, next) => {
     console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
     next();
 });
 
-// Подключение маршрутов
+// API маршруты
 app.use('/api/ingredients', ingredientsRouter);
+
+app.use((req, res, next) => {
+    if (req.url.startsWith('/api')) {
+        next();
+    } else {
+        res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
+    }
+});
 
 // Глобальная обработка 404
 app.use((req, res) => {
@@ -39,7 +44,7 @@ app.use((err, req, res, next) => {
 
 // Запуск сервера
 app.listen(PORT, () => {
-    console.log(`🍵 Сервер ингредиентов запущен по адресу http://localhost:${PORT}`);
+    console.log(`🍵 Сервер запущен по адресу http://localhost:${PORT}`);
     console.log(`📋 Доступные эндпоинты:`);
     console.log(`   GET    /api/ingredients`);
     console.log(`   GET    /api/ingredients/:id`);
