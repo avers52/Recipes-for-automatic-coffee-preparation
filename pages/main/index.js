@@ -23,17 +23,18 @@ export class MainPage {
 
     // Фильтрация
     filterIngredients(searchTerm) {
-        if (!searchTerm) {
-            this.filteredIngredients = [...this.allIngredients];
-        } else {
-            const term = searchTerm.toLowerCase();
-            this.filteredIngredients = this.allIngredients.filter(ing => 
-                ing.name.toLowerCase().includes(term) ||
-                ing.description.toLowerCase().includes(term) ||
-                ing.category.toLowerCase().includes(term)
-            );
-        }
-        this.renderIngredients();
+        console.log('🔍 filterIngredients вызван с:', searchTerm);  
+        const url = ingredientUrls.getIngredients(searchTerm);
+        console.log('📡 URL запроса:', url);  
+        
+        ajax.get(url, (data, status) => {
+            console.log('📦 Ответ сервера, статус:', status, 'данные:', data);  
+            if (status === 200 && data) {
+                this.allIngredients = data;
+                this.filteredIngredients = [...this.allIngredients];
+                this.renderIngredients();
+            }
+        });
     }
 
     // Добавление копии (POST)
