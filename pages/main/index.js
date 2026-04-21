@@ -23,12 +23,9 @@ export class MainPage {
 
     // Фильтрация
     filterIngredients(searchTerm) {
-        console.log('🔍 filterIngredients вызван с:', searchTerm);  
         const url = ingredientUrls.getIngredients(searchTerm);
-        console.log('📡 URL запроса:', url);  
         
         ajax.get(url, (data, status) => {
-            console.log('📦 Ответ сервера, статус:', status, 'данные:', data);  
             if (status === 200 && data) {
                 this.allIngredients = data;
                 this.filteredIngredients = [...this.allIngredients];
