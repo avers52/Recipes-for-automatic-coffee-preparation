@@ -78,18 +78,26 @@ export class IngredientDetailPage {
         const backBtn = document.getElementById('back-to-list');
         if (backBtn) {
             backBtn.addEventListener('click', () => {
-                window.location.hash = '';  // ← возврат на главную
+                // Просто переходим на главную страницу
+                window.location.href = 'index.html';
+            });
+        }
+    
+        // Кнопка "Редактировать"
+        const editBtn = document.getElementById('edit-ingredient');
+        if (editBtn) {
+            editBtn.addEventListener('click', () => {
+                window.location.href = `ingredient-form.html?id=${this.ingredient.id}`;
             });
         }
     
         // Кнопка "Удалить"
         const deleteBtn = document.getElementById('delete-ingredient');
         if (deleteBtn) {
-            deleteBtn.addEventListener('click', () => {
+            deleteBtn.addEventListener('click', async () => {
                 if (confirm(`Удалить ингредиент "${this.ingredient.name}"?`)) {
-                    ajax.delete(ingredientUrls.deleteIngredientById(this.ingredient.id), () => {
-                        window.location.hash = '';
-                    });
+                    await fetchClient.delete(ingredientUrls.deleteIngredientById(this.ingredient.id));
+                    window.location.href = 'index.html';
                 }
             });
         }
