@@ -17,30 +17,30 @@ export class IngredientFormPage {
                         <h2>${this.isEdit ? '✏️ Редактировать' : '➕ Добавить'} ингредиент</h2>
                         <form id="ingredient-form">
                             <div class="mb-3">
-                                <label>Название</label>
+                                <label class="form-label">Название *</label>
                                 <input type="text" class="form-control" id="name" required>
                             </div>
                             <div class="mb-3">
-                                <label>Описание</label>
-                                <textarea class="form-control" id="description"></textarea>
+                                <label class="form-label">Описание</label>
+                                <textarea class="form-control" id="description" rows="3"></textarea>
                             </div>
                             <div class="mb-3">
-                                <label>URL изображения</label>
+                                <label class="form-label">URL изображения</label>
                                 <input type="text" class="form-control" id="image">
                             </div>
                             <div class="mb-3">
-                                <label>Категория</label>
+                                <label class="form-label">Категория</label>
                                 <input type="text" class="form-control" id="category">
                             </div>
                             <div class="mb-3">
-                                <label>Единица измерения</label>
+                                <label class="form-label">Единица измерения</label>
                                 <input type="text" class="form-control" id="unit">
                             </div>
                             <div class="mb-3">
-                                <label>Цена</label>
+                                <label class="form-label">Цена (₽)</label>
                                 <input type="number" class="form-control" id="price">
                             </div>
-                            <button type="submit" class="btn btn-primary">💾 Сохранить</button>
+                            <!-- ❌ НЕТ КНОПКИ "СОХРАНИТЬ" -->
                         </form>
                     </div>
                 </div>

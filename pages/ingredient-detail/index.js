@@ -23,18 +23,15 @@ export class IngredientDetailPage {
         if (!this.ingredient) {
             return '<div class="alert alert-info">Загрузка...</div>';
         }
-
+    
         return `
             <div class="container mt-4">
                 <button class="btn btn-secondary mb-3" id="back-to-list">← Назад к списку</button>
-                
-                <div class="card mb-4">
+                <div class="card">
                     <div class="row g-0">
                         <div class="col-md-5">
-                            <img src="${this.ingredient.image}" 
-                                 class="img-fluid rounded-start" 
-                                 alt="${this.ingredient.name}"
-                                 style="width: 100%; max-height: 280px; object-fit: cover;">
+                            <img src="${this.ingredient.image}" class="img-fluid rounded-start" 
+                                 alt="${this.ingredient.name}" style="width: 100%; max-height: 300px; object-fit: cover;">
                         </div>
                         <div class="col-md-7">
                             <div class="card-body">
@@ -47,7 +44,6 @@ export class IngredientDetailPage {
                                     <li class="list-group-item"><strong>💰 Цена:</strong> ${this.ingredient.price} ₽</li>
                                 </ul>
                                 <div class="mt-3">
-                                    <button class="btn btn-warning" id="edit-ingredient">✏️ Редактировать</button>
                                     <button class="btn btn-danger" id="delete-ingredient">🗑️ Удалить</button>
                                 </div>
                             </div>
@@ -82,15 +78,8 @@ export class IngredientDetailPage {
                 window.location.href = 'index.html';
             });
         }
-    
-        // Кнопка "Редактировать"
-        const editBtn = document.getElementById('edit-ingredient');
-        if (editBtn) {
-            editBtn.addEventListener('click', () => {
-                window.location.href = `ingredient-form.html?id=${this.ingredient.id}`;
-            });
-        }
-    
+
+        
         // Кнопка "Удалить"
         const deleteBtn = document.getElementById('delete-ingredient');
         if (deleteBtn) {

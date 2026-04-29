@@ -95,7 +95,7 @@ export class MainPage {
         const mainContent = document.createElement('div');
         mainContent.className = 'container mt-4';
         this.parent.appendChild(mainContent);
-
+    
         mainContent.innerHTML = `
             <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap">
                 <h1>📦 Ингредиенты для кофе</h1>
@@ -103,26 +103,39 @@ export class MainPage {
                     <button class="btn btn-success" id="add-ingredient-btn">+ Добавить ингредиент</button>
                 </div>
             </div>
-            <div class="mb-4">
-                <input type="text" class="form-control" id="search-input" placeholder="Поиск ингредиентов...">
+            <div class="row mb-4">
+                <div class="col-md-8">
+                    <input type="text" class="form-control" id="search-input" placeholder="Поиск ингредиентов...">
+                </div>
+                <div class="col-md-4">
+                    <button class="btn btn-primary w-100" id="search-btn">🔍 Поиск</button>
+                </div>
             </div>
             <div id="stats-message" class="mb-3"></div>
             <div id="ingredients-list" class="ingredients-grid"></div>
         `;
-
+    
         this.loadIngredients();
-
-        document.getElementById('search-input').addEventListener('input', (e) => {
-            this.filterIngredients(e.target.value);
-        });
-
-        document.getElementById('add-ingredient-btn').addEventListener('click', () => {
-            this.addFirstCardCopy();
-        });
-
+    
+        // Поиск по кнопке
+        const searchBtn = document.getElementById('search-btn');
+        if (searchBtn) {
+            searchBtn.addEventListener('click', () => {
+                const searchTerm = document.getElementById('search-input').value;
+                this.filterIngredients(searchTerm);
+            });
+        }
+    
+        // Добавление
+        const addBtn = document.getElementById('add-ingredient-btn');
+        if (addBtn) {
+            addBtn.addEventListener('click', () => {
+                this.addFirstCardCopy();
+            });
+        }
+    
         this.parent.addEventListener('navigate-home', () => {
             this.render();
         });
-
-    }
+    }   
 }
