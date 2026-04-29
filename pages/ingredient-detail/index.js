@@ -45,7 +45,6 @@ export class IngredientDetailPage {
                                     <li class="list-group-item"><strong>💰 Цена:</strong> ${this.ingredient.price} ₽</li>
                                 </ul>
                                 <div class="mt-3">
-                                    <button class="btn btn-warning" id="edit-ingredient">✏️ Редактировать</button>
                                     <button class="btn btn-danger" id="delete-ingredient">🗑️ Удалить</button>
                                 </div>
                             </div>
@@ -76,11 +75,6 @@ export class IngredientDetailPage {
         document.getElementById('back-to-list')?.addEventListener('click', () => {
             window.location.hash = '';  
             window.location.reload();   
-        });
-
-        // Кнопка "Редактировать"
-        document.getElementById('edit-ingredient')?.addEventListener('click', () => {
-            window.location.hash = `ingredient-form/edit/${this.ingredientId}`;
         });
 
         // Кнопка "Удалить"
