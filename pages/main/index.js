@@ -1,7 +1,7 @@
 import { IngredientCardComponent } from '../../components/ingredient-card/index.js';
 import { IngredientDetailPage } from '../ingredient-detail/index.js';
-import { ingredientUrls } from '../../modules/ingredientUrls.js';
 import { fetchClient } from '../../modules/fetch.js';
+import { ingredientUrls } from '../../modules/ingredientUrls.js';
 
 export class MainPage {
     constructor(parent) {
@@ -10,49 +10,42 @@ export class MainPage {
         this.allIngredients = [];
     }
 
-    async loadIngredients(searchTerm = '') {
-        try {
-            const url = ingredientUrls.getIngredients(searchTerm);
-            const data = await fetchClient.get(url);
-            this.allIngredients = data;
-            this.filteredIngredients = [...this.allIngredients];
-            this.renderIngredients();
-        } catch (error) {
-            console.error('Ошибка загрузки:', error);
-        }
+    // Загрузка данных с сервера
+    async loadIngredients() {
+        const data = await fetchClient.get(ingredientUrls.getIngredients());
+        this.allIngredients = data;
+        this.filteredIngredients = [...this.allIngredients];
+        this.renderIngredients();
     }
 
-    filterIngredients(searchTerm) {
-        this.loadIngredients(searchTerm);
+    // Фильтрация
+    async filterIngredients(searchTerm) {
+        const url = ingredientUrls.getIngredients(searchTerm);
+        const data = await fetchClient.get(url);
+        this.allIngredients = data;
+        this.filteredIngredients = [...this.allIngredients];
+        this.renderIngredients();
     }
 
-    async addFirstCardCopy() {
-        if (this.allIngredients.length > 0) {
-            const first = this.allIngredients[0];
-            const newIngredient = {
-                name: `${first.name} (копия)`,
-                description: first.description,
-                image: first.image,
-                category: first.category,
-                unit: first.unit,
-                price: first.price
-            };
-            try {
-                await fetchClient.post(ingredientUrls.createIngredient(), newIngredient);
-                this.loadIngredients();
-            } catch (error) {
-                console.error('Ошибка добавления:', error);
-            }
-        }
+    // Добавление нового ингредиента (POST)
+    async addNewIngredient() {
+        const newIngredient = {
+            name: "Новый ингредиент",
+            description: "Введите описание",
+            image: "https://via.placeholder.com/200",
+            category: "основной",
+            unit: "гр",
+            price: 0
+        };
+        
+        await fetchClient.post(ingredientUrls.createIngredient(), newIngredient);
+        this.loadIngredients();
     }
 
+    // Удаление (DELETE)
     async deleteIngredient(ingredientId) {
-        try {
-            await fetchClient.delete(ingredientUrls.deleteIngredientById(ingredientId));
-            this.loadIngredients();
-        } catch (error) {
-            console.error('Ошибка удаления:', error);
-        }
+        await fetchClient.delete(ingredientUrls.deleteIngredientById(ingredientId));
+        this.loadIngredients();
     }
 
     // Показать детальную страницу
@@ -61,6 +54,7 @@ export class MainPage {
         detailPage.render();
     }
 
+    // Рендер списка карточек
     renderIngredients() {
         const listContainer = document.getElementById('ingredients-list');
         if (listContainer) listContainer.remove();
@@ -79,12 +73,13 @@ export class MainPage {
             const ingredientCard = new IngredientCardComponent(container, {
                 onDelete: (id) => this.deleteIngredient(id),
                 onView: (id) => this.showIngredientDetail(id),
-                onEdit: (id) => window.location.hash = `ingredient-form/edit/${id}`
+                onEdit: (id) => window.location.hash = `ingredient-form/edit/${id}`  
             });
             ingredientCard.render(ingredientData);
         });
     }
 
+    // ГЛАВНЫЙ РЕНДЕР
     render() {
         this.parent.innerHTML = '';
         
@@ -122,16 +117,16 @@ export class MainPage {
             });
         }
     
-        // Добавление
+        // Добавление нового ингредиента
         const addBtn = document.getElementById('add-ingredient-btn');
         if (addBtn) {
             addBtn.addEventListener('click', () => {
-                this.addFirstCardCopy();
+                this.addNewIngredient();
             });
         }
     
         this.parent.addEventListener('navigate-home', () => {
             this.render();
         });
-    }
+    }   
 }
