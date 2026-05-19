@@ -35,22 +35,22 @@ export class MainPage {
     }
 
     // Добавление копии (POST)
-    addFirstCardCopy() {
-        if (this.allIngredients.length > 0) {
-            const first = this.allIngredients[0];
-            const newIngredient = {
-                name: `${first.name} (копия)`,
-                description: first.description,
-                image: first.image,
-                category: first.category,
-                unit: first.unit,
-                price: first.price
-            };
-            ajax.post(ingredientUrls.createIngredient(), newIngredient, (data, status) => {
-                if (status === 201) this.loadIngredients();
-            });
+    addNewIngredient() {
+    const newIngredient = {
+        name: "Новый ингредиент",
+        description: "Введите описание",
+        image: "https://via.placeholder.com/200",
+        category: "основной",
+        unit: "гр",
+        price: 0
+    };
+    
+    ajax.post(ingredientUrls.createIngredient(), newIngredient, (data, status) => {
+        if (status === 201) {
+            this.loadIngredients();
         }
-    }
+    });
+}
 
     // Удаление (DELETE)
     deleteIngredient(ingredientId) {
@@ -130,7 +130,7 @@ export class MainPage {
         const addBtn = document.getElementById('add-ingredient-btn');
         if (addBtn) {
             addBtn.addEventListener('click', () => {
-                this.addFirstCardCopy();
+                this.addNewIngredient();
             });
         }
     
