@@ -42,9 +42,7 @@ export class IngredientCardComponent {
 
         // Кнопка "Удалить"
         document.getElementById(`delete-${data.id}`)?.addEventListener('click', () => {
-            if (confirm(`Удалить ингредиент "${data.name}"?`)) {
                 this.onDelete(data.id);
-            }
         });
     }
 
