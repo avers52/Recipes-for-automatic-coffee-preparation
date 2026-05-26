@@ -4,7 +4,7 @@ export class IngredientCardComponent {
         this.parent = parent;
         this.onDelete = callbacks.onDelete || (() => {});
         this.onView = callbacks.onView || (() => {});
-        this.onEdit = callbacks.onEdit || (() => {});  // ← ДОБАВИТЬ
+        this.onEdit = callbacks.onEdit || (() => {});  
     }
 
     getHTML(data) {
@@ -42,10 +42,7 @@ export class IngredientCardComponent {
 
         // Кнопка "Удалить"
         document.getElementById(`delete-${data.id}`)?.addEventListener('click', () => {
-            if (confirm(`Удалить ингредиент "${data.name}"?`)) {
-                this.onDelete(data.id);
-            }
-        });
+            });
     }
 
     render(data) {
