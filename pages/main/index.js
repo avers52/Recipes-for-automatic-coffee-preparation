@@ -1,5 +1,4 @@
 import { IngredientCardComponent } from '../../components/ingredient-card/index.js';
-import { convertIngredientIdsToRange, findPalindromeIngredients } from '../../utils/IngredientsUtils.js';
 import { ingredients } from '../../data/ingredients.js';  
 import { IngredientDetailPage } from '../ingredient-detail/index.js';
 
@@ -16,26 +15,6 @@ export class MainPage {
         detailPage.render();
     }
 
-    // Показать диапазоны ID (для ингредиентов)
-    showIngredientRanges() {
-        const ids = this.allIngredients.map(i => i.id);
-        const rangeString = convertIngredientIdsToRange(ids);
-        this.showMessage(`📊 Диапазоны ID ингредиентов: ${rangeString}`, 'info');
-    }
-
-    // Показать палиндромы (по названиям ингредиентов)
-    showPalindromeIngredients() {
-        const palindromes = findPalindromeIngredients(this.allIngredients);
-        
-        if (palindromes.length === 0) {
-            this.showMessage('🔤 Ингредиентов-палиндромов не найдено!', 'warning');
-        } else {
-            const names = palindromes.map(i => i.name).join(', ');
-            this.showMessage(`🔤 Найдены ингредиенты-палиндромы: ${names}`, 'success');
-            this.filteredIngredients = palindromes;
-            this.renderIngredients();
-        }
-    }
 
     // Показать сообщение 
     showMessage(text, type = 'info') {
@@ -129,8 +108,6 @@ export class MainPage {
                 <h1>📦 Ингредиенты для кофе</h1>
                 <div class="btn-group mt-2 mt-md-0">
                     <button class="btn btn-success" id="add-ingredient-btn">+ Добавить ингредиент</button>
-                    <button class="btn btn-info" id="show-ranges-btn">📊 Диапазоны ID</button>
-                    <button class="btn btn-warning" id="show-palindromes-btn">🔤 Палиндромы</button>
                 </div>
             </div>
             <div class="mb-4">
@@ -156,9 +133,6 @@ export class MainPage {
             this.showIngredientRanges();
         });
 
-        document.getElementById('show-palindromes-btn').addEventListener('click', () => {
-            this.showPalindromeIngredients();
-        });
 
         this.parent.addEventListener('navigate-home', () => {
             this.render();

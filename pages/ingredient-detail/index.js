@@ -12,9 +12,7 @@ export class IngredientDetailPage {
         }
 
         return `
-            <div class="container mt-4">
-                <button class="btn btn-secondary mb-3" id="back-to-list">← Назад к списку</button>
-                
+            <div class="container mt-4">  
                     <div class="card mb-4">
                     <div class="row g-0" style="min-height: 400px;">
                         <div class="col-md-5" style="display: flex; align-items: stretch;">
